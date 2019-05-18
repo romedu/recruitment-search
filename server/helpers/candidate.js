@@ -45,8 +45,13 @@ exports.getCandidate = async (req, res, next) => {
 
 exports.updateCandidate = async (req, res, next) => {
    try {
-      const updatedCandidate = await Candidate.updateOne({id: req.params.id});
-      res.status(200).json({updatedCandidate});
+      const {currentCandidate} = req.locals;
+      
+      // Update the values from the properties passed in the request body
+      for(property in req.body) currentCandidate[property] = req.body[property];
+      await currentCandidate.save();
+      
+      res.status(200).json({updatedCandidate: currentCandidate});
    }
    catch(error){
       error.status = 409;

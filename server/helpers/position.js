@@ -19,7 +19,6 @@ exports.createPosition = async (req, res, next) => {
       const {currentUser} = req.locals,
             newPosition   = await Position.create({...req.body, company: currentUser.id});
 
-      console.log(currentUser);
       currentUser.positions.push(newPosition.id);
       await currentUser.save();
 
@@ -38,13 +37,13 @@ exports.getPosition = async (req, res, next) => {
 
 exports.updatePosition = async (req, res, next) => {
    try {
-      const positionToUpdate = await Position.findById(req.params.id);
-
+      const {currentPosition} = req.locals;
+      
       // Update the values from the properties passed in the request body
-      for(property in req.body) positionToUpdate[property] = req.body[property];
-      await positionToUpdate.save();
+      for(property in req.body) currentPosition[property] = req.body[property];
+      await currentPosition.save();
 
-      res.status(200).json({updatedPosition: positionToUpdate});
+      res.status(200).json({updatedPosition: currentPosition});
    }
    catch(error){
       error.status = 409;
