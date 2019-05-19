@@ -40,7 +40,7 @@ exports.getEmployee = async (req, res, next) => {
 
 exports.updateEmployee = async (req, res, next) => {
    try {
-      const updatedEmployee = await Employee.updateOne({id: req.params.id});
+      const updatedEmployee = await Employee.findByIdAndUpdate(req.params.id, req.body, {new: true});
       res.status(200).json({updatedEmployee});
    }
    catch(error){

@@ -38,6 +38,10 @@ const bcrypt = require("bcryptjs")
          positions: [{
             type: mongoose.Schema.Types.ObjectId,
             ref: "Position"
+         }],
+         applications: [{
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "Candidate"
          }]
       });
 

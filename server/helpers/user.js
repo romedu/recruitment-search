@@ -4,12 +4,13 @@ const {User} = require("../models"),
 exports.findUser = async (req, res, next) => {
    try {
       const foundUser = await User.findById(req.params.userId)
-                               .populate("competences")
-                               .populate("languages")
-                               .populate("trainings")
-                               .populate("workingExperiences")
-                               .populate("positions")
-                               .exec();
+                                  .populate("competences")
+                                  .populate("languages")
+                                  .populate("trainings")
+                                  .populate("workingExperiences")
+                                  .populate("positions")
+                                  .populate("applications")
+                                  .exec();
 
       if(!foundUser) throw createError(404, "Not Found");
       else {

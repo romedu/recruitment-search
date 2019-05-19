@@ -18,8 +18,8 @@ exports.createCompetence = async (req, res, next) => {
 
 exports.updateCompetence = async (req, res, next) => {
    try {
-      const updatedCompetence = await Competence.updateOne({id: req.params.id}, req.body, {new: true});
-      return res.status(200).json({updateCompetence});
+      const updatedCompetence = await Competence.findByIdAndUpdate(req.params.id, req.body, {new: true});
+      return res.status(200).json({updatedCompetence});
    }
    catch(error){
       error.status = 409;

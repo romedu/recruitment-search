@@ -1,4 +1,4 @@
-const {Candidate} = require("../models"),
+const {User, Candidate} = require("../models"),
       {createError} = require("./error");
 
 exports.getCandidates = async (req, res, next) => {
@@ -17,6 +17,9 @@ exports.createCandidate = async (req, res, next) => {
       const {currentUser} = req.locals,
             newCandidate = await Candidate.create({...req.body, position: req.params.positionId, userData: currentUser.id});
       
+      currentUser.applications.push(newCandidate.id);
+      await currentUser.save();
+
       res.status(201).json({newCandidate});      
    }
    catch(error){
@@ -32,7 +35,7 @@ exports.getCandidate = async (req, res, next) => {
       if(!foundCandidate) throw createError(404, "Not Found");
       else {
          // Remove unnecessary userData
-         const {username, password, isCompany, positions, ...userData} = foundCandidate.userData._doc;
+         const {username, password, isCompany, positions, applications, ...userData} = foundCandidate.userData._doc;
          foundCandidate.userData._doc = userData;
       }
 
@@ -61,7 +64,26 @@ exports.updateCandidate = async (req, res, next) => {
 
 exports.deleteCandidate = async (req, res, next) => {
    try {
-      const deletedCandidate = await Candidate.deleteOne({_id: req.params.id});
+      const {currentUser} = req.locals;
+
+      let userApplying,
+          deletedCandidate;
+
+      if(currentUser.isCompany){
+         deletedCandidate = await Candidate.findByIdAndDelete(req.params.id);
+         userApplying = await User.findById(deletedCandidate.userData);
+      }
+      else {
+         // Because of the middlewares only the candidate itself can get here
+         // that's why the current user is the one applying
+         userApplying = currentUser;
+         deletedCandidate = req.locals.currentCandidate;
+         await Candidate.deleteOne({_id: req.params.id});
+      }
+
+      userApplying.applications.pull(deletedCandidate.id);
+      await userApplying.save();
+      
       res.status(200).json({deletedCandidate});
    }
    catch(error){

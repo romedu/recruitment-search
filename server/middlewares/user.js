@@ -18,6 +18,7 @@ exports.checkIfToken = async (req, res, next) => {
                                                                  .populate("languages")
                                                                  .populate("trainings")
                                                                  .populate("workingExperiences")
+                                                                 .populate("applications")
                                                                  .exec();
 
       next();

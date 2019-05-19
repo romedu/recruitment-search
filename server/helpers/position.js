@@ -1,5 +1,6 @@
-const {Position}    = require("../models"),
-      {createError} = require("./error");
+const mongoose                    = require("mongoose"),
+      {User, Position, Candidate} = require("../models"),
+      {createError}               = require("./error");
 
 exports.getPositions = async (req, res, next) => {
    try {
@@ -53,17 +54,26 @@ exports.updatePosition = async (req, res, next) => {
 
 exports.deletePosition = async (req, res, next) => {
    try {
-      const {currentUser, currentPosition}  = req.locals;
+      const {currentUser, currentPosition}  = req.locals,
+            candidatesToDelete = await Candidate.find({position: currentPosition.id});
+
+      // Pull the candiates from the users's applications property
+      // Bandaid Fix
+      candidatesToDelete.forEach(async (candidate, index) => {
+         await User.updateOne({applications: mongoose.Types.ObjectId(candidate._id)}, {$pull: {applications: mongoose.Types.ObjectId(candidate._id)}});
+      })
 
       await Position.deleteOne({_id: currentPosition.id});
-
+      // Delete all of the position's candidates
+      await Candidate.deleteMany({position: currentPosition.id});
+      
       currentUser.positions.pull(currentPosition.id);
       await currentUser.save();
 
       res.status(200).json({deletedPosition: currentPosition});
    }
    catch(error){
-      console.log(error);
+      // console.log(error);
       next(error);
    }
 }
