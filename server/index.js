@@ -33,13 +33,12 @@ app.use(userMiddlewares.checkIfToken)
 app.use("/api/positions/:positionId/candidates", candidatesRoutes);
 
 // In order to access or manipulate any of the followings, the user must be it's owner
-app.use(userMiddlewares.checkIfOwner)
-app.use("/api/users/:userId", usersRoutes);
-app.use("/api/users/:userId/employees", userMiddlewares.checkIfCompany, employeesRoutes);
-app.use("/api/users/:userId/languages", userMiddlewares.checkIfPerson, languagesRoutes);
-app.use("/api/users/:userId/trainings", userMiddlewares.checkIfPerson, trainingsRoutes);
-app.use("/api/users/:usedId/competences", userMiddlewares.checkIfPerson, competencesRoutes);
-app.use("/api/users/:userId/working-experiences", userMiddlewares.checkIfPerson, workingExperiencesRoutes);
+app.use("/api/users/:userId/employees", userMiddlewares.checkIfCompany, userMiddlewares.checkIfOwner, employeesRoutes);
+app.use("/api/users/:userId/languages", userMiddlewares.checkIfPerson, userMiddlewares.checkIfOwner, languagesRoutes);
+app.use("/api/users/:userId/trainings", userMiddlewares.checkIfPerson, userMiddlewares.checkIfOwner, trainingsRoutes);
+app.use("/api/users/:usedId/competences", userMiddlewares.checkIfPerson, userMiddlewares.checkIfOwner, competencesRoutes);
+app.use("/api/users/:userId/working-experiences", userMiddlewares.checkIfPerson, userMiddlewares.checkIfOwner, workingExperiencesRoutes);
+app.use("/api/users/:userId", userMiddlewares.checkIfOwner, usersRoutes);
 
 // Error handler
 app.use((error, req, res, next) => {

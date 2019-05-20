@@ -2,7 +2,7 @@ const mongoose = require("mongoose"),
       employeeSchema = new mongoose.Schema({
          startingDate: {
             type: Date,
-            required: true
+            default: Date.now()
          },
          position: {
             type: String,
@@ -22,11 +22,13 @@ const mongoose = require("mongoose"),
          },
          userData: {
             type: mongoose.Schema.Types.ObjectId,
-            ref: "User"
+            ref: "User",
+            required: true
          },
          company: {
             type: mongoose.Schema.Types.ObjectId,
-            ref: "User"
+            ref: "User",
+            required: true
          }
       });
 

@@ -15,7 +15,7 @@ exports.getCandidates = async (req, res, next) => {
 exports.createCandidate = async (req, res, next) => {
    try {
       const {currentUser} = req.locals,
-            newCandidate = await Candidate.create({...req.body, position: req.params.positionId, userData: currentUser.id});
+            newCandidate = await Candidate.create({...req.body, position: req.params.positionId, userData: currentUser._id});
       
       currentUser.applications.push(newCandidate.id);
       await currentUser.save();
@@ -34,7 +34,7 @@ exports.getCandidate = async (req, res, next) => {
 
       if(!foundCandidate) throw createError(404, "Not Found");
       else {
-         // Remove unnecessary userData
+         // Remove unnecessary/private userData
          const {username, password, isCompany, positions, applications, ...userData} = foundCandidate.userData._doc;
          foundCandidate.userData._doc = userData;
       }

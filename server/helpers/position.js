@@ -18,7 +18,7 @@ exports.getPositions = async (req, res, next) => {
 exports.createPosition = async (req, res, next) => {
    try {
       const {currentUser} = req.locals,
-            newPosition   = await Position.create({...req.body, company: currentUser.id});
+            newPosition   = await Position.create({...req.body, company: currentUser._id});
 
       currentUser.positions.push(newPosition.id);
       await currentUser.save();
@@ -73,7 +73,6 @@ exports.deletePosition = async (req, res, next) => {
       res.status(200).json({deletedPosition: currentPosition});
    }
    catch(error){
-      // console.log(error);
       next(error);
    }
 }

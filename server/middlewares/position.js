@@ -18,7 +18,7 @@ exports.getCurrentPosition = async (req, res, next) => {
 exports.checkIfOwner = async (req, res, next) => {
    try {
       const {currentUser, currentPosition} = req.locals;
-      if(currentUser.id == currentPosition.company) return next();
+      if(currentUser._id == currentPosition.company) return next();
       throw createError(403, "Unauthorized");
    }
    catch(error){

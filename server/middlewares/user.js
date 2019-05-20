@@ -8,19 +8,20 @@ exports.checkIfToken = async (req, res, next) => {
       const token = req.get("Authorization"),
             currentUser = jwt.verify(token, SECRET_KEY);
 
-      req.locals = {};
       // If the currentUser is a company only populate the positions property, if not populate everything else
-      req.locals.currentUser = currentUser.isCompany ? await User.findById(currentUser.id)
+      populatedCurrentUser = currentUser.isCompany ? await User.findById(currentUser.id)
                                                                  .populate("positions")
                                                                  .exec()
-                                                     : await User.findById(currentUser.id)
-                                                                 .populate("competeces")
-                                                                 .populate("languages")
-                                                                 .populate("trainings")
-                                                                 .populate("workingExperiences")
-                                                                 .populate("applications")
-                                                                 .exec();
+                                                   : await User.findById(currentUser.id)
+                                                               .populate("competeces")
+                                                               .populate("languages")
+                                                               .populate("trainings")
+                                                               .populate("workingExperiences")
+                                                               .populate("applications")
+                                                               .exec();
 
+      req.locals = {};
+      req.locals.currentUser = populatedCurrentUser._doc;
       next();
    }
    catch(err){
@@ -48,7 +49,7 @@ exports.checkIfPerson = (req, res, next) => {
 
 exports.checkIfOwner = (req, res, next) => {
    const {currentUser} = req.locals;
-   if(req.params.userId === currentUser.id) next();
+   if(req.params.userId == currentUser._id) next();
    else {
       let error = createError(403, "Unauthorized");
       next(error);
