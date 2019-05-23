@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 
 mongoose.set("debug", true);
+mongoose.set('useFindAndModify', false);
 mongoose.connect(process.env.DBURL, {useNewUrlParser: true});
 mongoose.Promise = Promise;
 

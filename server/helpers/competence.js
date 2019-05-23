@@ -18,7 +18,7 @@ exports.createCompetence = async (req, res, next) => {
 
 exports.updateCompetence = async (req, res, next) => {
    try {
-      const updatedCompetence = await Competence.findByIdAndUpdate(req.params.id, req.body, {new: true});
+      const updatedCompetence = await Competence.findOneAndUpdate({_id: req.params.id}, req.body, {new: true});
       return res.status(200).json({updatedCompetence});
    }
    catch(error){
@@ -30,12 +30,12 @@ exports.updateCompetence = async (req, res, next) => {
 exports.deleteCompetence = async (req, res, next) => {
    try {
       const {currentUser} = req.locals,
-            deletedCompetence = await Competence.deleteOne({_id: req.params.id});
+            deletedCompetence = await Competence.findOneAndRemove({_id: req.params.id});
 
       currentUser.competences.pull(deletedCompetence.id);
       await currentUser.save();
 
-      return res.status(200).json({deleteCompetence});
+      return res.status(200).json({deletedCompetence});
    }
    catch(error){
       next(error);

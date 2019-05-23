@@ -19,7 +19,7 @@ exports.createTraining = async (req, res, next) => {
 exports.deleteTraining = async (req, res, next) => {
    try {
       const {currentUser}  = req.locals,
-            deletedTraining = await Training.deleteOne({_id: req.params.id});
+            deletedTraining = await Training.findOneAndRemove({_id: req.params.id});
 
       currentUser.trainings.pull(deletedTraining.id);
       await currentUser.save();

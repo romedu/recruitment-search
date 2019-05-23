@@ -36,7 +36,7 @@ app.use("/api/positions/:positionId/candidates", candidatesRoutes);
 app.use("/api/users/:userId/employees", userMiddlewares.checkIfCompany, userMiddlewares.checkIfOwner, employeesRoutes);
 app.use("/api/users/:userId/languages", userMiddlewares.checkIfPerson, userMiddlewares.checkIfOwner, languagesRoutes);
 app.use("/api/users/:userId/trainings", userMiddlewares.checkIfPerson, userMiddlewares.checkIfOwner, trainingsRoutes);
-app.use("/api/users/:usedId/competences", userMiddlewares.checkIfPerson, userMiddlewares.checkIfOwner, competencesRoutes);
+app.use("/api/users/:userId/competences", userMiddlewares.checkIfPerson, userMiddlewares.checkIfOwner, competencesRoutes);
 app.use("/api/users/:userId/working-experiences", userMiddlewares.checkIfPerson, userMiddlewares.checkIfOwner, workingExperiencesRoutes);
 app.use("/api/users/:userId", userMiddlewares.checkIfOwner, usersRoutes);
 

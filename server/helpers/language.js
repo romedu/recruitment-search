@@ -18,7 +18,7 @@ exports.createLanguage = async (req, res, next) => {
 
 exports.updateLanguage = async (req, res, next) => {
    try {
-      const updatedLanguage = await Language.findByIdAndUpdate(req.params.id, req.body, {new: true});
+      const updatedLanguage = await Language.findOneAndUpdate({_id: req.params.id}, req.body, {new: true});
       res.status(200).json({updatedLanguage});
    }
    catch(error){
@@ -30,7 +30,7 @@ exports.updateLanguage = async (req, res, next) => {
 exports.deleteLanguage = async (req, res, next) => {
    try {
       const {currentUser}  = req.locals,
-            deletedLanguage = await Language.deleteOne({_id: req.params.id});
+            deletedLanguage = await Language.findOneAndDelete({_id: req.params.id});
 
       currentUser.languages.pull(deletedLanguage.id);
       await currentUser.save();

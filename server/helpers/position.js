@@ -63,7 +63,7 @@ exports.deletePosition = async (req, res, next) => {
          await User.updateOne({applications: mongoose.Types.ObjectId(candidate._id)}, {$pull: {applications: mongoose.Types.ObjectId(candidate._id)}});
       })
 
-      await Position.deleteOne({_id: currentPosition.id});
+      await Position.findOneAndRemove({_id: currentPosition.id});
       // Delete all of the position's candidates
       await Candidate.deleteMany({position: currentPosition.id});
       

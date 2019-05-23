@@ -19,7 +19,7 @@ exports.createWorkingExperience = async (req, res, next) => {
 exports.deleteWorkingExperience = async (req, res, next) => {
    try {
       const {currentUser}  = req.locals,
-            deletedWorkingExperience = await WorkingExperience.deleteOne({_id: req.params.id});
+            deletedWorkingExperience = await WorkingExperience.findOneAndRemove({_id: req.params.id});
 
       currentUser.workingExperiences.pull(deletedWorkingExperience.id);
       await currentUser.save();

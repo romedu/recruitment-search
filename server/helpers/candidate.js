@@ -78,7 +78,7 @@ exports.deleteCandidate = async (req, res, next) => {
          // that's why the current user is the one applying
          userApplying = currentUser;
          deletedCandidate = req.locals.currentCandidate;
-         await Candidate.deleteOne({_id: req.params.id});
+         await Candidate.findOneAndRemove({_id: req.params.id});
       }
 
       userApplying.applications.pull(deletedCandidate.id);

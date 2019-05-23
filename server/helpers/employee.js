@@ -50,7 +50,7 @@ exports.updateEmployee = async (req, res, next) => {
 exports.deleteEmployee = async (req, res, next) => {
    try {
       const {currentEmployee} = req.locals;
-      await Employee.deleteOne({_id: req.params.id});
+      await Employee.findOneAndRemove({_id: req.params.id});
       res.status(200).json({deletedEmployee: currentEmployee});
    }
    catch(error){

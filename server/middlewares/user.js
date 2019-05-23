@@ -21,7 +21,7 @@ exports.checkIfToken = async (req, res, next) => {
                                                                .exec();
 
       req.locals = {};
-      req.locals.currentUser = populatedCurrentUser._doc;
+      req.locals.currentUser = populatedCurrentUser;
       next();
    }
    catch(err){
@@ -49,7 +49,7 @@ exports.checkIfPerson = (req, res, next) => {
 
 exports.checkIfOwner = (req, res, next) => {
    const {currentUser} = req.locals;
-   if(req.params.userId == currentUser._id) next();
+   if(req.params.userId == currentUser.id) next();
    else {
       let error = createError(403, "Unauthorized");
       next(error);
