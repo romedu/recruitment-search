@@ -44,8 +44,8 @@ exports.login = async (req, res, next) => {
 }
 
 exports.verifyToken = (req, res, next) => {
-   const {password, ...userData} = req.locals.currentUser;
-   return res.status(200).json({user: userData});
+   const {_id: id, name, isCompany} = req.locals.currentUser._doc;
+   return res.status(200).json({user: {id, name, isCompany}});
 }
 
 module.exports = exports;
