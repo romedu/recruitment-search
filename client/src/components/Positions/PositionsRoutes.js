@@ -1,10 +1,14 @@
 import React, {Fragment} from "react";
-import {Route} from "react-router-dom";
+import {Route, Switch} from "react-router-dom";
 import Positions from "./Positions";
+import PositionPage from "./PositionPage";
 
 const PositionsRoutes = () => (
    <Fragment>
-      <Route path="/" component={Positions} />
+      <Switch>
+         <Route path="/:positionId" component={PositionPage} />
+         <Route path="/" component={Positions} />
+      </Switch>
    </Fragment>
 )
 
