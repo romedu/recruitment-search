@@ -2,6 +2,8 @@ import React, {useState, useEffect} from 'react';
 import {BrowserRouter, Route} from "react-router-dom";
 import {getFetchOptions} from "./utils/fetchUtils";
 import PositionsRoutes from "./components/Positions/PositionsRoutes";
+import LandingPage from "./components/Landing/LandingPage";
+import UserContext from "./context/user-context";
 import './App.css';
 
 const App = () => {
@@ -10,6 +12,15 @@ const App = () => {
       name: null,
       isCompany: null
    });
+
+   const setUser = userData => {
+      const {id, name, isCompany} = userData;
+      setUserState({
+         id,
+         name,
+         isCompany 
+      })
+   };
 
    useEffect(() => {
       const token = localStorage.getItem("token");
@@ -20,12 +31,7 @@ const App = () => {
             .then(response => response.json())
             .then(({error, user}) => {
                if(error) throw new Error(error.message);
-               const {id, name, isCompany} = user;
-               setUserState({
-                  id,
-                  name,
-                  isCompany 
-               })
+               setUser(user);
             })
             .catch(error => {
                console.log("Create modal: ", error.message);
@@ -35,7 +41,17 @@ const App = () => {
 
    return (
       <BrowserRouter>
-         <Route path="/positions" component={PositionsRoutes} />
+         <UserContext.Provider 
+            value={{
+               id: userState.id,
+               name: userState.name,
+               isCompany: userState.isCompany,
+               setUser
+            }}
+         >
+            <Route path="/positions" component={PositionsRoutes} />
+            <Route exact path="/" component={LandingPage} />
+         </UserContext.Provider>
       </BrowserRouter>
    );
 }
