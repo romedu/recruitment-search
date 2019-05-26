@@ -6,8 +6,8 @@ import PositionPage from "./PositionPage";
 const PositionsRoutes = () => (
    <Fragment>
       <Switch>
-         <Route path="/:positionId" component={PositionPage} />
-         <Route path="/" component={Positions} />
+         <Route path="/positions/:positionId" component={PositionPage} />
+         <Route exact path="/positions" component={Positions} />
       </Switch>
    </Fragment>
 )

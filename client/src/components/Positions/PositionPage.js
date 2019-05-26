@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from "react";
+import React, {useState, useEffect, Fragment} from "react";
 import FieldData from "../UI/FieldData";
 import Button from "../UI/Button";
 
@@ -7,10 +7,10 @@ const PositionPage = props => {
         currentPosition: null
     });
     
-    let content = <div></div>;
+    let content = null;
     
     useEffect(() => {
-        const {positionId} = props.match;
+        const {positionId} = props.match.params;
         fetch(`/api/positions/${positionId}`)
             .then(response => response.json())
             .then(({error, position}) => {
@@ -20,25 +20,27 @@ const PositionPage = props => {
             .catch(error => {
                 console.log("Error: " + error.message);
             })
-    }, [])
+    }, [props.match])
     
     if(positionState.currentPosition){
         let {name, riskLevel, minimumSalary, maximumSalary, state} = positionState.currentPosition;
         
         content = (
-            <div>
-                <h2>
-                    {`Position: ${name}`}
-                </h2>    
-                <FieldData title="Risk Level" description={riskLevel} />
-                <FieldData title="Salary" description={`${minimumSalary}$ - ${maximumSalary}$`} />
-                {state && <Button> Apply </Button>}
-            </div>
+            <Fragment>
+               <h2>
+                  {`Position: ${name}`}
+               </h2>    
+               <FieldData title="Risk Level" description={riskLevel} />
+               <FieldData title="Salary" description={`${minimumSalary}$ - ${maximumSalary}$`} />
+               {state && <Button> Apply </Button>}
+            </Fragment>
         )
     }
     
     return (
-        {content}    
+        <div>
+           {content}
+        </div>   
     )
 }
 
