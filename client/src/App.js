@@ -1,17 +1,19 @@
 import React, {useState, useEffect} from 'react';
-import {BrowserRouter, Route} from "react-router-dom";
+import {BrowserRouter, Route, Switch, Redirect} from "react-router-dom";
 import {getFetchOptions} from "./utils/fetchUtils";
 import PositionsRoutes from "./components/Positions/PositionsRoutes";
 import LandingPage from "./components/Landing/LandingPage";
+import Authentication from "./components/Authentication/Authentication";
 import UserContext from "./context/user-context";
 import './App.css';
 
 const App = () => {
-   const [userState, setUserState] = useState({
-      id: null,
-      name: null,
-      isCompany: null
-   });
+   const token = localStorage.getItem("token"),
+         [userState, setUserState] = useState({
+            id: null,
+            name: null,
+            isCompany: null
+         });
 
    const setUser = userData => {
       const {id, name, isCompany} = userData;
@@ -23,7 +25,6 @@ const App = () => {
    };
 
    useEffect(() => {
-      const token = localStorage.getItem("token");
       if(token){
          const fetchOptions = getFetchOptions("GET", token);
 
@@ -37,7 +38,7 @@ const App = () => {
                console.log("Create modal: ", error.message);
             })
       }
-   }, []);
+   }, [token]);
 
    return (
       <BrowserRouter>
@@ -49,8 +50,12 @@ const App = () => {
                setUser
             }}
          >
-            <Route path="/positions" component={PositionsRoutes} />
-            <Route exact path="/" component={LandingPage} />
+            <Switch>
+               {!userState.id && !token && <Route path="/authentication" component={Authentication} />}
+               <Route path="/positions" component={PositionsRoutes} />
+               <Route exact path="/" component={LandingPage} />
+               <Redirect from="/authentication" to="/positions" />
+            </Switch>
          </UserContext.Provider>
       </BrowserRouter>
    );
