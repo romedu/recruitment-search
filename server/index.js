@@ -21,7 +21,7 @@ const express                  = require("express"),
 // General Middlewares
 app.use(morgan("tiny"));
 app.use(cors());
-app.use(express.urlencoded({extended: true}));
+app.use(express.json());
 
 
 // Routes

@@ -1,9 +1,8 @@
-export const getFetchOptions = (method = "GET", token, body = null) => ({
+export const getFetchOptions = (method = "GET", token, body) => ({
    method,
-   mode: 'cors',
    headers: {
          'Content-Type': 'application/json',
          "Authorization": token
    },
-   body
+   body: body ? JSON.stringify(body) : null
 });
