@@ -18,7 +18,11 @@ const bcrypt = require("bcryptjs")
             type: String,
             required: true
          },
-         nationalId: String,
+         nationalId: {
+            type: String,
+            required: true,
+            unique: true
+         },
          competences: [{
             type: mongoose.Schema.Types.ObjectId,
             ref: "Competence"
