@@ -1,0 +1,10 @@
+.NavItems {
+   display: flex;
+   justify-content: space-around;
+}
+
+@media (max-width: 810px) {
+   .NavItems {
+      display: block;
+   }
+}

@@ -5,6 +5,7 @@ import PositionsRoutes from "./components/Positions/PositionsRoutes";
 import LandingPage from "./components/Landing/LandingPage";
 import Authentication from "./components/Authentication/Authentication";
 import UserContext from "./context/user-context";
+import NavBar from './components/NavBar/NavBar/NavBar';
 import './App.css';
 
 const App = () => {
@@ -16,7 +17,11 @@ const App = () => {
          });
 
    const setUser = userData => {
-      const {id, name, isCompany} = userData;
+      const currentToken = localStorage.getItem("token"),
+            {id, name, isCompany, token} = userData;
+
+      // In case the function was called from the verifytoken callback, there is no need to replace the token
+      if(!currentToken) localStorage.setItem("token", token);
       setUserState({
          id,
          name,
@@ -25,8 +30,10 @@ const App = () => {
    };
 
    useEffect(() => {
-      if(token){
-         const fetchOptions = getFetchOptions("GET", token);
+      const hookToken = localStorage.getItem("token");
+      
+      if(hookToken){
+         const fetchOptions = getFetchOptions("GET", hookToken);
 
          fetch("/api/auth/verifyToken", fetchOptions)
             .then(response => response.json())
@@ -38,7 +45,7 @@ const App = () => {
                console.log("Create modal: ", error.message);
             })
       }
-   }, [token]);
+   }, []);
 
    return (
       <BrowserRouter>
@@ -50,6 +57,7 @@ const App = () => {
                setUser
             }}
          >
+            <NavBar />
             <Switch>
                {!userState.id && !token && <Route path="/authentication" component={Authentication} />}
                <Route path="/positions" component={PositionsRoutes} />
