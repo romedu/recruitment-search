@@ -14,7 +14,7 @@ exports.getEmployees = async (req, res, next) => {
 
 exports.createEmployee = async (req, res, next) => {
    try {
-      const {currentUser} = req.locals;
+      const {currentUser} = req.locals,
             newEmployee = await Employee.create({...req.body, company: currentUser._id});
 
       res.status(201).json({newEmployee});      
