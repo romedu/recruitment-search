@@ -1,18 +1,21 @@
-import React, {useState, useEffect, Fragment} from "react";
+import React, {useState, useEffect, useContext, Fragment} from "react";
 import CandidateData from "./CandidateData";
 import Button from "../UI/Button";
+import {getFetchOptions} from "../../utils/fetchUtils";
+import UserContext from "../../context/user-context";
 
 const CandidatePage = props => {
-    const [candidateState, setCandidateState] = useState({
-        currentCandidate: null
-    });
+    const userContext = useContext(UserContext),
+          [candidateState, setCandidateState] = useState({
+              currentCandidate: null
+          });
     
     let content = null;
     
     useEffect(() => {
         const {positionId, candidateId} = props.match.params;
               
-        fetch(`/api/users/${positionId}/candidates/${candidateId}`)
+        fetch(`/api/positions/${positionId}/candidates/${candidateId}`)
             .then(response => response.json())
             .then(({error, candidate}) => {
                 if(error) throw new Error(error.message);
@@ -23,6 +26,40 @@ const CandidatePage = props => {
             })
     }, [props.match])
     
+    const hireCandidate = () => {
+        const token = localStorage.getItem("token"),
+              {position, department, aspiringSalary, userData} = candidateState.currentCandidate,
+              newCandidateBody = {
+                department,
+                position: position.name,
+                monthlySalary: aspiringSalary,
+                userData: userData._id
+              },
+              fetchOptions = getFetchOptions("POST", token, newCandidateBody);
+              
+        fetch(`/api/users/${userContext.id}/employees`, fetchOptions)
+            .then(response => response.json())
+            .then(({error, newEmployee}) => {
+                if(error) throw new Error(error.message);
+                deleteCandidate();
+            })
+            .catch(error => console.log("Error: ", error.message))
+    }
+    
+    const deleteCandidate = () => {
+        const token = localStorage.getItem("token"),
+              {positionId, candidateId} = props.match.params,
+              fetchOptions = getFetchOptions("DELETE", token);
+              
+        fetch(`/api/positions/${positionId}/candidates/${candidateId}`, fetchOptions)
+            .then(response => response.json())
+            .then(({error, candidate}) => {
+                if(error) throw new Error(error.message);
+                props.history.push(`/api/positions/${positionId}/candidates`);
+            })
+            .catch(error => console.log("Error: ", error.message))
+    }
+    
     if(candidateState.currentCandidate){
         const {position} = candidateState.currentCandidate;
         
@@ -32,8 +69,8 @@ const CandidatePage = props => {
                   {`Position Application: "${position.name}"`}
                </h2>    
                {candidateState.currentCandidate && <CandidateData candidate={candidateState.currentCandidate} />}
-               <Button> Hire Employee </Button>
-               <Button> Decline Application </Button>
+               <Button onClick={hireCandidate}> Hire Candidate </Button>
+               <Button onClick={deleteCandidate}> Decline Candidate </Button>
             </Fragment>
         )
     }
