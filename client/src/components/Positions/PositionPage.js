@@ -1,6 +1,6 @@
 import React, {useState, useEffect, Fragment} from "react";
+import {Link} from "react-router-dom";
 import FieldData from "../UI/FieldData";
-import Button from "../UI/Button";
 
 const PositionPage = props => {
     const [positionState, setPositionState] = useState({
@@ -23,7 +23,8 @@ const PositionPage = props => {
     }, [props.match])
     
     if(positionState.currentPosition){
-        let {name, riskLevel, minimumSalary, maximumSalary, state} = positionState.currentPosition;
+        const {positionId} = props.match.params,
+              {name, riskLevel, minimumSalary, maximumSalary, state} = positionState.currentPosition;
         
         content = (
             <Fragment>
@@ -32,7 +33,7 @@ const PositionPage = props => {
                </h2>    
                <FieldData title="Risk Level" description={riskLevel} />
                <FieldData title="Salary" description={`${minimumSalary}$ - ${maximumSalary}$`} />
-               {state && <Button> Apply </Button>}
+               {state && <Link to={`/positions/${positionId}/application`}> Apply </Link>}
             </Fragment>
         )
     }
