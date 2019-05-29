@@ -3,13 +3,12 @@ import EmployeesList from "./EmployeesList";
 import UserContext from "../../context/user-context";
 
 const Employees = () => {
-   const [employeesState, setEmployeeState] = useState({
+   const userContext = useContext(UserContext),
+         [employeesState, setEmployeeState] = useState({
       employees: null
    });
 
    useEffect(() => {
-      const userContext = useContext(UserContext);
-      
       fetch(`/api/users/${userContext.id}/employees`)
          .then(response => response.json())
          .then(({error, employees}) => {

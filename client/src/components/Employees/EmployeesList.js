@@ -1,5 +1,5 @@
 import React from "react";
-import EmployeeThumbnail from "./PositionThumbnail";
+import EmployeeThumbnail from "./EmployeeThumbnail";
 
 const EmployeesList = ({employees}) => {
    const employeesThumbnails = employees.map(employee => <EmployeeThumbnail key={employee._id}
