@@ -1,7 +1,7 @@
 import React, {Fragment} from "react";
 import NavItem from "./NavItem/NavItem";
 
-const PersonNavItems = logoutHandler => (
+const PersonNavItems = ({logoutHandler}) => (
    <Fragment>
       <NavItem url="/my-profile">
          My Profile
