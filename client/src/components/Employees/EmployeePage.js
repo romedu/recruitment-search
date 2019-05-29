@@ -1,5 +1,5 @@
 import React, {useState, useEffect, useContext, Fragment} from "react";
-import FieldData from "../UI/FieldData";
+import EmployeeData from "./EmployeeData";
 import Button from "../UI/Button";
 import UserContext from "../../context/user-context";
 
@@ -26,17 +26,14 @@ const EmployeePage = props => {
     }, [props.match])
     
     if(employeeState.currentEmployee){
-        let {position, department, monthlySalary, userData, company, state} = employeeState.currentEmployee;
+        let {position, state} = employeeState.currentEmployee;
         
         content = (
             <Fragment>
                <h2>
                   {`Employee: ${position}`}
                </h2>    
-               <FieldData title="Name" description={userData.name} />
-               <FieldData title="Monthly Salary" description={`${monthlySalary}$`} />
-               <FieldData title="Department" description={department} />
-               <FieldData title="Company Name" description={company.name} />
+               <EmployeeData employee={employeeState.currentEmployee} />
                {state && <Button> Fire Employee </Button>}
             </Fragment>
         )

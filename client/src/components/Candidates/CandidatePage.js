@@ -1,5 +1,5 @@
 import React, {useState, useEffect, Fragment} from "react";
-import FieldData from "../UI/FieldData";
+import CandidateData from "./CandidateData";
 import Button from "../UI/Button";
 
 const CandidatePage = props => {
@@ -24,19 +24,16 @@ const CandidatePage = props => {
     }, [props.match])
     
     if(candidateState.currentCandidate){
-        const {position, department, aspiringSalary, recommendedBy, userData} = candidateState.currentCandidate;
+        const {position} = candidateState.currentCandidate;
         
         content = (
             <Fragment>
                <h2>
                   {`Position Application: "${position.name}"`}
                </h2>    
-               <FieldData title="Candidate Name" description={userData.name} />
-               <FieldData title="Candidate National ID" description={userData.nationalId} />
-               <FieldData title="Aspiring Salary" description={`${aspiringSalary}$`} />
-               <FieldData title="Department" description={department} />
-               <FieldData title="Recommended By" description={recommendedBy} />
+               {candidateState.currentCandidate && <CandidateData candidate={candidateState.currentCandidate} />}
                <Button> Hire Employee </Button>
+               <Button> Decline Application </Button>
             </Fragment>
         )
     }
