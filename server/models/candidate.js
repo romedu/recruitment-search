@@ -20,7 +20,6 @@ const mongoose = require("mongoose"),
          userData: {
             type: mongoose.Schema.Types.ObjectId,
             ref: "User",
-            unique: true,
             required: true
          }
       });
