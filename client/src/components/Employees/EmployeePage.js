@@ -1,6 +1,7 @@
 import React, {useState, useEffect, useContext, Fragment} from "react";
 import EmployeeData from "./EmployeeData";
 import Button from "../UI/Button";
+import {getFetchOptions} from "../../utils/fetchUtils";
 import UserContext from "../../context/user-context";
 
 const EmployeePage = props => {
@@ -25,6 +26,23 @@ const EmployeePage = props => {
             })
     }, [props.match])
     
+    const fireEmployee = () => {
+        const token = localStorage.getItem("token"),
+              userContext = useContext(UserContext),
+              {employeeId} = props.match.params,
+              fetchOptions = getFetchOptions("DELETE", token);
+              
+        fetch(`/api/users/${userContext.id}/employees/${employeeId}`, fetchOptions)
+            .then(response => response.json())
+            .then(({error, employee}) => {
+                if(error) throw new Error(error.message);
+                props.history.push("/my-employees");
+            })
+            .catch(error => {
+                console.log("Error: " + error.message);
+            })
+    }
+    
     if(employeeState.currentEmployee){
         let {position, state} = employeeState.currentEmployee;
         
@@ -34,7 +52,7 @@ const EmployeePage = props => {
                   {`Employee: ${position}`}
                </h2>    
                <EmployeeData employee={employeeState.currentEmployee} />
-               {state && <Button> Fire Employee </Button>}
+               {state && <Button onClick={fireEmployee}> Fire Employee </Button>}
             </Fragment>
         )
     }
