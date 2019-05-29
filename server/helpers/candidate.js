@@ -30,7 +30,7 @@ exports.createCandidate = async (req, res, next) => {
 
 exports.getCandidate = async (req, res, next) => {
    try {
-      const foundCandidate = await Candidate.findById(req.params.id).populate("userData").exec();
+      const foundCandidate = await Candidate.findById(req.params.id).populate("userData").populate("position").exec();
 
       if(!foundCandidate) throw createError(404, "Not Found");
       else {
