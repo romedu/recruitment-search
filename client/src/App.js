@@ -51,6 +51,7 @@ const App = () => {
                setUser(user);
             })
             .catch(error => {
+               logoutUser();
                console.log("Create modal: ", error.message);
             })
       }
