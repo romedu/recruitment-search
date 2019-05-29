@@ -1,12 +1,12 @@
 import React, {Fragment} from "react";
 import NavItem from "./NavItem/NavItem";
 
-const PersonNavItems = () => (
+const PersonNavItems = logoutHandler => (
    <Fragment>
       <NavItem url="/my-profile">
          My Profile
       </NavItem>
-      <NavItem url="/positions" action={() => console.log("logout")}>
+      <NavItem url="/positions" action={logoutHandler}>
          Logout
       </NavItem>
    </Fragment>

@@ -1,7 +1,7 @@
 import React, {Fragment} from "react";
 import NavItem from "./NavItem/NavItem";
 
-const CompanyNavItems = () => (
+const CompanyNavItems = logoutHandler => (
    <Fragment>
       <NavItem url="/my-profile">
          My Profile
@@ -9,7 +9,7 @@ const CompanyNavItems = () => (
       <NavItem url="/my-employees">
          My Employees
       </NavItem>
-      <NavItem url="/positions" action={() => console.log("logout")}>
+      <NavItem url="/positions" action={logoutHandler}>
          Logout
       </NavItem>
    </Fragment>

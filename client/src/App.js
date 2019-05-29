@@ -28,6 +28,15 @@ const App = () => {
          isCompany 
       })
    };
+   
+   const logoutUser = () => {
+      localStorage.removeItem("token");
+      setUserState({
+         id: null,
+         name: null,
+         isCompany: null
+      })
+   };
 
    useEffect(() => {
       const hookToken = localStorage.getItem("token");
@@ -54,7 +63,8 @@ const App = () => {
                id: userState.id,
                name: userState.name,
                isCompany: userState.isCompany,
-               setUser
+               setUser,
+               logoutUser
             }}
          >
             <NavBar />

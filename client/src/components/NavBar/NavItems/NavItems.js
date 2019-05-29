@@ -11,8 +11,8 @@ const NavItems = () => {
    let currentNav; // Nav Items to display
 
    if(userContext.id){
-      if(useContext.isCompany) currentNav = <CompanyNavItems />;
-      else currentNav = <PersonNavItems />;
+      if(userContext.isCompany) currentNav = <CompanyNavItems logoutHandler={userContext.logoutUser} />;
+      else currentNav = <PersonNavItems logoutHandler={userContext.logoutUser} />;
    }
    else currentNav = <AuthNavItems />;
 
