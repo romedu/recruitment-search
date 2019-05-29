@@ -21,7 +21,7 @@ const Candidates = props => {
          .catch(error => {
             console.log("Create modal: ", error.message);
          })
-   }, [props.match])
+   }, [positionId])
 
    return (
       <div>

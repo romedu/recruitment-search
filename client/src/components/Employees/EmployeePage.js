@@ -5,15 +5,15 @@ import {getFetchOptions} from "../../utils/fetchUtils";
 import UserContext from "../../context/user-context";
 
 const EmployeePage = props => {
-    const [employeeState, setEmployeeState] = useState({
-        currentEmployee: null
-    });
+    const userContext = useContext(UserContext),
+          [employeeState, setEmployeeState] = useState({
+             currentEmployee: null
+          });
     
     let content = null;
     
     useEffect(() => {
-        const userContext = useContext(UserContext),
-              {employeeId} = props.match.params;
+        const {employeeId} = props.match.params;
               
         fetch(`/api/users/${userContext.id}/employees/${employeeId}`)
             .then(response => response.json())
@@ -24,11 +24,10 @@ const EmployeePage = props => {
             .catch(error => {
                 console.log("Error: " + error.message);
             })
-    }, [props.match])
+    }, [props.match, userContext.id])
     
     const fireEmployee = () => {
         const token = localStorage.getItem("token"),
-              userContext = useContext(UserContext),
               {employeeId} = props.match.params,
               fetchOptions = getFetchOptions("DELETE", token);
               

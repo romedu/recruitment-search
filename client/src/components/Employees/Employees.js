@@ -18,7 +18,7 @@ const Employees = () => {
          .catch(error => {
             console.log("Create modal: ", error.message);
          })
-   }, [])
+   }, [userContext.id])
 
    return (
       <div>
