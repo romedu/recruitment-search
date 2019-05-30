@@ -2,7 +2,7 @@ const mongoose = require("mongoose"),
       candidateSchema = new mongoose.Schema({
          position: {
             type: mongoose.Schema.Types.ObjectId,
-            rel: "Position",
+            ref: "Position",
             required: true
          },
          department: {

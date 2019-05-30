@@ -13,9 +13,11 @@ const EmployeePage = props => {
     let content = null;
     
     useEffect(() => {
-        const {employeeId} = props.match.params;
+        const token = localStorage.getItem("token"),
+              {employeeId} = props.match.params,
+              fetchOptions = getFetchOptions("GET", token);
               
-        fetch(`/api/users/${userContext.id}/employees/${employeeId}`)
+        fetch(`/api/users/${userContext.id}/employees/${employeeId}`, fetchOptions)
             .then(response => response.json())
             .then(({error, employee}) => {
                 if(error) throw new Error(error.message);
@@ -51,7 +53,7 @@ const EmployeePage = props => {
                   {`Employee: ${position}`}
                </h2>    
                <EmployeeData employee={employeeState.currentEmployee} />
-               {state && <Button onClick={fireEmployee}> Fire Employee </Button>}
+               {state && <Button action={fireEmployee}> Fire Employee </Button>}
             </Fragment>
         )
     }

@@ -34,10 +34,10 @@ const ApplicationForm = props => {
             <InputField name="department" value={candidateState.department} changeHandler={updateInputHandler} required>
                 Department:
             </InputField>
-            <InputField name="aspiringSalary" value={candidateState.aspiringSalary} changeHandler={updateInputHandler} required>
+            <InputField name="aspiringSalary" type="number" value={candidateState.aspiringSalary} changeHandler={updateInputHandler} required>
                 Aspiring Salary:
             </InputField>
-            <InputField name="recommendedBy" value={candidateState.recommendedBy} changeHandler={updateInputHandler} required>
+            <InputField name="recommendedBy" value={candidateState.recommendedBy} changeHandler={updateInputHandler}>
                 Recommended By:
             </InputField>
             <Button>

@@ -6,8 +6,8 @@ import EmployeePage from "./EmployeePage";
 const EmployeesRoutes = () => (
    <Fragment>
       <Switch>
-         <Route path="/employees/:employeeId" component={EmployeePage} />
-         <Route exact path="/employees" component={Employees} />
+         <Route path="/my-employees/:employeeId" component={EmployeePage} />
+         <Route exact path="/my-employees" component={Employees} />
       </Switch>
    </Fragment>
 )

@@ -13,16 +13,18 @@ const CandidatePage = props => {
     let content = null;
     
     useEffect(() => {
-        const {positionId, candidateId} = props.match.params;
+        const token = localStorage.getItem("token"),
+              {positionId, candidateId} = props.match.params,
+              fetchOptions = getFetchOptions("GET", token);
               
-        fetch(`/api/positions/${positionId}/candidates/${candidateId}`)
+        fetch(`/api/positions/${positionId}/candidates/${candidateId}`, fetchOptions)
             .then(response => response.json())
             .then(({error, candidate}) => {
                 if(error) throw new Error(error.message);
                 setCandidateState({currentCandidate: candidate});
             })
             .catch(error => {
-                console.log("Error: " + error.message);
+                console.log("Error: ", error.message);
             })
     }, [props.match])
     
@@ -50,12 +52,12 @@ const CandidatePage = props => {
         const token = localStorage.getItem("token"),
               {positionId, candidateId} = props.match.params,
               fetchOptions = getFetchOptions("DELETE", token);
-              
+
         fetch(`/api/positions/${positionId}/candidates/${candidateId}`, fetchOptions)
             .then(response => response.json())
             .then(({error, candidate}) => {
                 if(error) throw new Error(error.message);
-                props.history.push(`/api/positions/${positionId}/candidates`);
+                props.history.push(`/positions/${positionId}/candidates`);
             })
             .catch(error => console.log("Error: ", error.message))
     }
@@ -69,8 +71,8 @@ const CandidatePage = props => {
                   {`Position Application: "${position.name}"`}
                </h2>    
                {candidateState.currentCandidate && <CandidateData candidate={candidateState.currentCandidate} />}
-               <Button onClick={hireCandidate}> Hire Candidate </Button>
-               <Button onClick={deleteCandidate}> Decline Candidate </Button>
+               <Button action={hireCandidate}> Hire Candidate </Button>
+               <Button action={deleteCandidate}> Decline Candidate </Button>
             </Fragment>
         )
     }

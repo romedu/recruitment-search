@@ -1,11 +1,13 @@
-import React, {useState, useEffect, Fragment} from "react";
+import React, {useState, useEffect, useContext, Fragment} from "react";
 import {Link} from "react-router-dom";
 import PositionData from "./PositionData";
+import UserContext from "../../context/user-context";
 
 const PositionPage = props => {
-    const [positionState, setPositionState] = useState({
-        currentPosition: null
-    });
+    const userContext = useContext(UserContext),
+          [positionState, setPositionState] = useState({
+            currentPosition: null
+          });
     
     let content = null;
     
@@ -32,7 +34,7 @@ const PositionPage = props => {
                   {`Position: ${name}`}
                </h2>    
                <PositionData position={positionState.currentPosition} />
-               {state && <Link to={`/positions/${positionId}/application`}> Apply </Link>}
+               {state && userContext.id && !userContext.isCompany && <Link to={`/positions/${positionId}/application`}> Apply </Link>}
             </Fragment>
         )
     }
