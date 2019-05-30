@@ -26,7 +26,7 @@ const PositionPage = props => {
     
     if(positionState.currentPosition){
         const {positionId} = props.match.params,
-              {name, state} = positionState.currentPosition;
+              {name, state, company: companyId} = positionState.currentPosition;
         
         content = (
             <Fragment>
@@ -35,6 +35,7 @@ const PositionPage = props => {
                </h2>    
                <PositionData position={positionState.currentPosition} />
                {state && userContext.id && !userContext.isCompany && <Link to={`/positions/${positionId}/application`}> Apply </Link>}
+               {userContext.id === companyId && <Link to={`/positions/${positionId}/candidates`}> Candidates </Link>}
             </Fragment>
         )
     }
