@@ -9,7 +9,8 @@ const InputField = props => (
              name={props.name} 
              value={props.value} 
              onChange={props.changeHandler} 
-             required={props.required} 
+             required={props.required}
+             disabled={props.disabled}
              checked={props.value} />
    </fieldset>
 );
