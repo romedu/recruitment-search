@@ -1,7 +1,7 @@
 exports.findUser = async (req, res, next) => {
    try {
       const {currentUser} = req.locals,
-            {username, password, isCompany, ...userData} = currentUser;
+            {username, password, ...userData} = currentUser;
 
       res.status(200).json({user: userData});
    }
