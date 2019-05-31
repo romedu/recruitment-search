@@ -10,7 +10,8 @@ const CompanyFields = ({positions}) => {
     
     return (
         <Fragment>
-            <ToggleableField baseUrl="/positions" 
+            <ToggleableField baseUrl="/positions"
+                             creationUrl="/positions/create"
                              fieldData={positions} 
                              identifier="name" 
                              isDisplayed={fieldsState.displayPositions} 
