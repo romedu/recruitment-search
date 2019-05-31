@@ -28,9 +28,9 @@ const ToggleableField = props => {
             <Button style={{float: "right"}} action={props.toggleHandler}>
                 {props.isDisplayed ? "Hide" : "Show"}
             </Button>
-            <Button style={{float: "right"}} action={props.creationHandler}>
+            <Link to={props.creationUrl}>
                 Create New
-            </Button>
+            </Link>
             <ul>
                 {props.isDisplayed && dataList}
             </ul>
