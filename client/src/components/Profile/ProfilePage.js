@@ -40,7 +40,7 @@ const ProfilePage = props => {
             content = (
                 <div>
                     <UserFields name={name} nationalId={nationalId} isCompany={isCompany} />
-                    <PersonFields />
+                    <PersonFields {...profileState.userData} />
                 </div>
             )
         }
