@@ -1,10 +1,13 @@
-import React, {useState, useEffect} from "react";
+import React, {useState, useEffect, useContext} from "react";
+import {Link} from "react-router-dom";
 import PositionsList from "./PositionsList";
+import UserContext from "../../context/user-context";
 
 const Positions = () => {
-   const [positionsState, setPositionState] = useState({
-      positions: null
-   });
+   const userContext = useContext(UserContext),
+         [positionsState, setPositionState] = useState({
+            positions: null
+         });
 
    useEffect(() => {
       fetch("/api/positions")
@@ -23,6 +26,7 @@ const Positions = () => {
          <h1>
             Positions
          </h1>
+         {userContext.isCompany && <Link to={`/positions/create`}> Create a position </Link>}
          {positionsState.positions && <PositionsList positions={positionsState.positions} />}
       </div>
    )
