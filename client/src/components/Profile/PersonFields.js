@@ -20,35 +20,37 @@ const PersonFields = props => {
     return (
         <Fragment>
             <ToggleableField fieldData={props.competences} 
-                             identifier="description" 
+                             identifiers={["description"]} 
                              isDisplayed={fieldsState.displayCompetences} 
                              toggleHandler={() => displayFieldToggler("displayCompetences")} 
             >
                 Competences
             </ToggleableField>
             <ToggleableField fieldData={props.languages} 
-                             identifier="name" 
+                             identifiers={["name"]} 
                              isDisplayed={fieldsState.displayLanguages} 
                              toggleHandler={() => displayFieldToggler("displayLanguages")} 
             >
                 Languages
             </ToggleableField>
             <ToggleableField fieldData={props.trainings} 
-                             identifier="name" 
+                             identifiers={["name"]} 
                              isDisplayed={fieldsState.displayTrainings} 
                              toggleHandler={() => displayFieldToggler("displayTrainings")} 
             >
                 Trainings
             </ToggleableField>
             <ToggleableField fieldData={props.workingExperiences} 
-                             identifier="name" 
+                             identifiers={["name"]} 
                              isDisplayed={fieldsState.displayExperiences} 
                              toggleHandler={() => displayFieldToggler("displayExperiences")} 
             >
                 Working Experiences
             </ToggleableField>
-            <ToggleableField fieldData={props.applications} 
-                             identifier="name" 
+            <ToggleableField urlResources={["positions", "candidates"]}
+                             urlResourcesIds={[["position", "_id"], "_id"]}
+                             fieldData={props.applications} 
+                             identifiers={["position", "name"]} 
                              isDisplayed={fieldsState.displayApplications} 
                              toggleHandler={() => displayFieldToggler("displayApplications")} 
             >

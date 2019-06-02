@@ -10,10 +10,11 @@ const CompanyFields = ({positions}) => {
     
     return (
         <Fragment>
-            <ToggleableField baseUrl="/positions"
+            <ToggleableField urlResources={["positions"]}
+                             urlResourcesIds={["_id"]}
                              creationUrl="/positions/create"
                              fieldData={positions} 
-                             identifier="name" 
+                             identifiers={["name"]} 
                              isDisplayed={fieldsState.displayPositions} 
                              toggleHandler={displayTogglerHandler} 
             >

@@ -1,21 +1,22 @@
 import React from "react";
 import {Link} from "react-router-dom";
 import Button from "../UI/Button";
+import {buildUrl} from "../../utils/stringUtils";
 
 const ToggleableField = props => {
     let dataList;
     
-    if(props.baseUrl){
+    if(props.urlResources){
         dataList = props.fieldData.map(data => (
-            <Link key={data._id} to={`${props.baseUrl}/${data._id}`}>
-                {data[props.identifier]}
+            <Link key={data._id} to={buildUrl(data, props.urlResources, props.urlResourcesIds)} style={{display: "block"}}>
+               {props.identifiers.reduce((acc, nextVal) => acc[nextVal], data)}
             </Link>
         ))
     }
     else {
         dataList = props.fieldData.map(data => (
             <li key={data._id} >
-                {data[props.identifier]}
+               {props.identifiers.reduce((acc, nextVal) => acc[nextVal], data)}
             </li>
         ))
     }
@@ -28,9 +29,9 @@ const ToggleableField = props => {
             <Button style={{float: "right"}} action={props.toggleHandler}>
                 {props.isDisplayed ? "Hide" : "Show"}
             </Button>
-            <Link to={props.creationUrl}>
+            {props.creationUrl && <Link to={props.creationUrl}>
                 Create New
-            </Link>
+            </Link>}
             <ul>
                 {props.isDisplayed && dataList}
             </ul>
