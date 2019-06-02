@@ -57,7 +57,8 @@ const CandidatePage = props => {
             .then(response => response.json())
             .then(({error, candidate}) => {
                 if(error) throw new Error(error.message);
-                props.history.push(`/positions/${positionId}/candidates`);
+                if(userContext.isCompany) props.history.push(`/positions/${positionId}/candidates`);
+                else props.history.push("/my-profile");
             })
             .catch(error => console.log("Error: ", error.message))
     }
@@ -71,8 +72,12 @@ const CandidatePage = props => {
                   {`Position Application: "${position.name}"`}
                </h2>    
                {candidateState.currentCandidate && <CandidateData candidate={candidateState.currentCandidate} />}
-               <Button action={hireCandidate}> Hire Candidate </Button>
-               <Button action={deleteCandidate}> Decline Candidate </Button>
+               {userContext.isCompany && <Button action={hireCandidate}>
+                  Hire Candidate
+               </Button>}
+               <Button action={deleteCandidate}>
+                  {userContext.isCompany ? "Decline Candidate" : "Delete application"}
+               </Button>
             </Fragment>
         )
     }

@@ -17,7 +17,7 @@ const PositionsRoutes = () => {
             {userContext.id && userContext.isCompany && <Route path="/positions/create" component={PositionCreate} />}
             <Route exact path="/positions/:positionId" component={PositionPage} />
             {userContext.id && !userContext.isCompany && <Route path="/positions/:positionId/application" component={PositionApplication} />}
-            {userContext.id && userContext.isCompany && <Route path="/positions/:positionId/candidates" component={CandidatesRoutes} />}
+            {userContext.id && <Route path="/positions/:positionId/candidates" component={CandidatesRoutes} />}
          </Switch>
       </Fragment>
    )
