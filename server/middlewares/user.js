@@ -17,7 +17,12 @@ exports.checkIfToken = async (req, res, next) => {
                                                                .populate("languages")
                                                                .populate("trainings")
                                                                .populate("workingExperiences")
-                                                               .populate("applications")
+                                                               .populate({
+                                                                  path: "applications",
+                                                                  populate: {
+                                                                     path: "position"
+                                                                  }
+                                                               })
                                                                .exec();
 
       req.locals = {};
