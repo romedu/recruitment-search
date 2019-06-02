@@ -64,27 +64,19 @@ exports.updateCandidate = async (req, res, next) => {
 
 exports.deleteCandidate = async (req, res, next) => {
    try {
-      const {currentUser} = req.locals;
+      const {currentUser, currentCandidate} = req.locals;
 
-      let userApplying,
-          deletedCandidate;
+      let userApplying;
 
-      if(currentUser.isCompany){
-         deletedCandidate = await Candidate.findByIdAndDelete(req.params.id);
-         userApplying = await User.findById(deletedCandidate.userData);
-      }
-      else {
-         // Because of the middlewares only the candidate itself can get here
-         // that's why the current user is the one applying
-         userApplying = currentUser;
-         deletedCandidate = req.locals.currentCandidate;
-         await Candidate.findOneAndRemove({_id: req.params.id});
-      }
+      if(currentUser.isCompany) userApplying = await User.findById(currentCandidate.userData);
+      // Only the candidate itself can reach the following else block
+      else userApplying = currentUser;
 
-      userApplying.applications.pull(deletedCandidate.id);
+      userApplying.applications.pull(currentCandidate.id);
       await userApplying.save();
+      await Candidate.findOneAndRemove({_id: req.params.id});
       
-      res.status(200).json({deletedCandidate});
+      res.status(200).json({deletedCandidate: currentCandidate});
    }
    catch(error){
       next(error);
