@@ -24,7 +24,7 @@ const ProfilePage = props => {
                 setProfileState({ userData: user })
             })
             .catch(error => console.log("Error: ", error.message))
-    }, [userContext])
+    }, [userContext, props.match])
     
     if(profileState.userData){
         const {name, nationalId, isCompany, positions} = profileState.userData;
