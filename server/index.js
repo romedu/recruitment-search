@@ -54,6 +54,6 @@ app.use((error, req, res, next) => {
 })
 
 // Initialize server
-app.listen(8081, () => {
+app.listen(PORT, () => {
    console.log(`App is running in: http://localhost:${PORT}`);
 });
