@@ -4,7 +4,7 @@ import {getFetchOptions} from "./utils/fetchUtils";
 import PositionsRoutes from "./components/Positions/PositionsRoutes";
 import EmployeesRoutes from "./components/Employees/EmployeesRoutes";
 import LandingPage from "./components/Landing/LandingPage";
-import ProfilePage from "./components/Profile/ProfilePage";
+import ProfileRoutes from "./components/Profile/ProfileRoutes";
 import Authentication from "./components/Authentication/Authentication";
 import UserContext from "./context/user-context";
 import NavBar from './components/NavBar/NavBar/NavBar';
@@ -74,7 +74,7 @@ const App = () => {
             <Switch>
                {!userState.id && !token && <Route path="/authentication" component={Authentication} />}
                {userState.isCompany && <Route path="/my-employees" component={EmployeesRoutes} />}
-               {userState.id && <Route path="/my-profile" component={ProfilePage} />}
+               {userState.id && <Route path="/my-profile" component={ProfileRoutes} />}
                <Route path="/positions" component={PositionsRoutes} />
                <Route exact path="/" component={LandingPage} />
                <Redirect from="/authentication" to="/positions" />

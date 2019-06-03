@@ -20,14 +20,16 @@ const PersonFields = props => {
     return (
         <Fragment>
             <ToggleableField fieldData={props.competences} 
-                             identifiers={["description"]} 
+                             identifiers={["description"]}
+                             creationUrl="/my-profile/competences/create" 
                              isDisplayed={fieldsState.displayCompetences} 
                              toggleHandler={() => displayFieldToggler("displayCompetences")} 
             >
                 Competences
             </ToggleableField>
             <ToggleableField fieldData={props.languages} 
-                             identifiers={["name"]} 
+                             identifiers={["name"]}
+                             creationUrl="/my-profile/languages/create" 
                              isDisplayed={fieldsState.displayLanguages} 
                              toggleHandler={() => displayFieldToggler("displayLanguages")} 
             >
