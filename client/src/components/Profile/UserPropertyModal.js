@@ -6,7 +6,7 @@ import Button from "../UI/Button";
 import UserContext from "../../context/user-context";
 import {getFetchOptions} from "../../utils/fetchUtils";
 
-const UserPropertyCreator = props => {
+const UserPropertyModal = props => {
    const {resourceName} = props.match.params,
          propertyName = resourceName === "languages" ? "name" : "description",
          userContext = useContext(UserContext),
@@ -50,4 +50,4 @@ const UserPropertyCreator = props => {
    )
 }
 
-export default UserPropertyCreator;
+export default UserPropertyModal;
