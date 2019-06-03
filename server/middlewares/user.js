@@ -9,24 +9,23 @@ exports.checkIfToken = async (req, res, next) => {
             currentUser = jwt.verify(token, SECRET_KEY);
 
       // If the currentUser is a company only populate the positions property, if not populate everything else
-      populatedCurrentUser = currentUser.isCompany ? await User.findById(currentUser.id)
+      req.locals = {};
+      req.locals.currentUser = currentUser.isCompany ? await User.findById(currentUser.id)
                                                                  .populate("positions")
                                                                  .exec()
-                                                   : await User.findById(currentUser.id)
-                                                               .populate("competeces")
-                                                               .populate("languages")
-                                                               .populate("trainings")
-                                                               .populate("workingExperiences")
-                                                               .populate({
-                                                                  path: "applications",
-                                                                  populate: {
-                                                                     path: "position"
-                                                                  }
-                                                               })
-                                                               .exec();
+                                                     : await User.findById(currentUser.id)
+                                                                 .populate("competences")
+                                                                 .populate("languages")
+                                                                 .populate("trainings")
+                                                                 .populate("workingExperiences")
+                                                                 .populate({
+                                                                    path: "applications",
+                                                                    populate: {
+                                                                       path: "position"
+                                                                    }
+                                                                 })
+                                                                 .exec();
 
-      req.locals = {};
-      req.locals.currentUser = populatedCurrentUser;
       next();
    }
    catch(err){
