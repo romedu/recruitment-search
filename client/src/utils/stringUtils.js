@@ -14,3 +14,18 @@ export const buildUrl = (data, urlResources, urlResourcesIds) => {
    })
    return builtUrl.join("/");
 }
+
+export const fromCamelToKebabCase = stringToConvert => {
+   return stringToConvert.split("")
+                         .map(character => {
+                            let lowerCasedCharacter = character.toLowerCase();
+                            return character !== lowerCasedCharacter ? `-${lowerCasedCharacter}` : character;
+                         })
+                         .join("");
+}
+
+export const capitalizeString = stringToCapitalize => {
+   return stringToCapitalize.split("")
+                            .map((character, index) => index ? character : character.toUpperCase())
+                            .join("")
+}
