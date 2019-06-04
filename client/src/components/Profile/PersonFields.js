@@ -36,14 +36,16 @@ const PersonFields = props => {
                 Languages
             </ToggleableField>
             <ToggleableField fieldData={props.trainings} 
-                             identifiers={["name"]} 
+                             identifiers={["description"]}
+                             creationUrl="/my-profile/trainings/create"  
                              isDisplayed={fieldsState.displayTrainings} 
                              toggleHandler={() => displayFieldToggler("displayTrainings")} 
             >
                 Trainings
             </ToggleableField>
             <ToggleableField fieldData={props.workingExperiences} 
-                             identifiers={["name"]} 
+                             identifiers={["position"]}
+                             creationUrl="/my-profile/workingExperiences/create" 
                              isDisplayed={fieldsState.displayExperiences} 
                              toggleHandler={() => displayFieldToggler("displayExperiences")} 
             >
