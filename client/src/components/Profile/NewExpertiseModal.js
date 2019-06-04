@@ -7,10 +7,11 @@ import Button from "../UI/Button";
 import UserContext from "../../context/user-context";
 import {getFetchOptions} from "../../utils/fetchUtils";
 import {fromCamelToKebabCase} from "../../utils/stringUtils";
+import withErrorModal from "../../hoc/withErrorModal";
 
-const NewExpertiseModal = ({expertiseName, properties, history}) => {
+const NewExpertiseModal = props => {
     const userContext = useContext(UserContext),
-          initialState = properties.reduce((acc, nextVal) => {
+          initialState = props.properties.reduce((acc, nextVal) => {
             acc[nextVal.name] = nextVal.type === "number" ? 0 : "";
             return acc;
           }, {}),
@@ -23,16 +24,16 @@ const NewExpertiseModal = ({expertiseName, properties, history}) => {
         const token = localStorage.getItem("token"),
               fetchOptions = getFetchOptions("POST", token, expertiseState);
               
-        fetch(`/api/users/${userContext.id}/${fromCamelToKebabCase(expertiseName)}`, fetchOptions)
+        fetch(`/api/users/${userContext.id}/${fromCamelToKebabCase(props.expertiseName)}`, fetchOptions)
             .then(response => response.json())
             .then(({error}) => {
                 if(error) throw new Error(error.message);
-                history.push("/my-profile");
+                props.history.push("/my-profile");
             })
-            .catch(error => console.log("Error: ", error.message))
+            .catch(error => props.openModalHandler(error.message))
     }
     
-    const inputFields = properties.map((property, index) => (
+    const inputFields = props.properties.map((property, index) => (
           <InputField key={property.name + index} 
                       name={property.name} 
                       type={property.type} 
@@ -46,10 +47,10 @@ const NewExpertiseModal = ({expertiseName, properties, history}) => {
     
     return (
         <Fragment>
-            <Backdrop show={true} hide={() => history.push("/my-profile")} />
+            <Backdrop show={true} hide={() => props.history.push("/my-profile")} />
             <div style={{position: "fixed", width: "25vw", height: "25vw", top: "20vh", left: "37.5vw", zIndex: 101, backgroundColor: "white"}}>
                 <h3>
-                    Create {expertiseName}
+                    Create {props.expertiseName}
                 </h3>
                 <form onSubmit={submitHandler}>
                     {inputFields}
@@ -62,4 +63,4 @@ const NewExpertiseModal = ({expertiseName, properties, history}) => {
     )
 }
 
-export default withRouter(NewExpertiseModal);
+export default withRouter(withErrorModal(NewExpertiseModal));

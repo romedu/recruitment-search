@@ -9,8 +9,9 @@ import Authentication from "./components/Authentication/Authentication";
 import UserContext from "./context/user-context";
 import NavBar from './components/NavBar/NavBar/NavBar';
 import './App.css';
+import withErrorModal from "./hoc/withErrorModal";
 
-const App = () => {
+const App = props => {
    const token = localStorage.getItem("token"),
          [userState, setUserState] = useState({
             id: null,
@@ -54,10 +55,10 @@ const App = () => {
             })
             .catch(error => {
                logoutUser();
-               console.log("Create modal: ", error.message);
+               props.openModalHandler(error.message)
             })
       }
-   }, []);
+   }, [props]);
 
    return (
       <BrowserRouter>
@@ -84,4 +85,4 @@ const App = () => {
    );
 }
 
-export default App;
+export default withErrorModal(App);

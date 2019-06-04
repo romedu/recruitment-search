@@ -5,8 +5,9 @@ import Button from "../UI/Button";
 import {getFetchOptions} from "../../utils/fetchUtils";
 import {updateTextInput} from "../../utils/InputHandlers";
 import UserContext from "../../context/user-context";
+import withErrorModal from "../../hoc/withErrorModal";
 
-const Login = () => {
+const Login = props => {
    const userContext = useContext(UserContext);
 
    const [loginState, setLoginState] = useState({
@@ -26,7 +27,7 @@ const Login = () => {
             if(error) throw new Error(error.message);
             userContext.setUser(userData);
          })
-         .catch(error => console.log("Error: ", error.message))
+         .catch(error => props.openModalHandler(error.message))
    }
 
    return (
@@ -52,4 +53,4 @@ const Login = () => {
    )
 }
 
-export default Login;
+export default withErrorModal(Login);

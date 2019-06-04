@@ -3,6 +3,7 @@ import CandidateData from "./CandidateData";
 import Button from "../UI/Button";
 import {getFetchOptions} from "../../utils/fetchUtils";
 import UserContext from "../../context/user-context";
+import withErrorModal from "../../hoc/withErrorModal";
 
 const CandidatePage = props => {
     const userContext = useContext(UserContext),
@@ -23,10 +24,8 @@ const CandidatePage = props => {
                 if(error) throw new Error(error.message);
                 setCandidateState({currentCandidate: candidate});
             })
-            .catch(error => {
-                console.log("Error: ", error.message);
-            })
-    }, [props.match])
+            .catch(error => props.openModalHandler(error.message))
+    }, [props])
     
     const hireCandidate = () => {
         const token = localStorage.getItem("token"),
@@ -45,7 +44,7 @@ const CandidatePage = props => {
                 if(error) throw new Error(error.message);
                 deleteCandidate();
             })
-            .catch(error => console.log("Error: ", error.message))
+            .catch(error => props.openModalHandler(error.message))
     }
     
     const deleteCandidate = () => {
@@ -60,7 +59,7 @@ const CandidatePage = props => {
                 if(userContext.isCompany) props.history.push(`/positions/${positionId}/candidates`);
                 else props.history.push("/my-profile");
             })
-            .catch(error => console.log("Error: ", error.message))
+            .catch(error => props.openModalHandler(error.message))
     }
     
     if(candidateState.currentCandidate){
@@ -89,4 +88,4 @@ const CandidatePage = props => {
     )
 }
 
-export default CandidatePage;
+export default withErrorModal(CandidatePage);

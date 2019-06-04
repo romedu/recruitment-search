@@ -3,6 +3,7 @@ import InputField from "../UI/InputField";
 import Button from "../UI/Button";
 import {getFetchOptions} from "../../utils/fetchUtils";
 import {updateTextInput} from "../../utils/InputHandlers";
+import withErrorModal from "../../hoc/withErrorModal";
 
 const ApplicationForm = props => {
     const [candidateState, setCandidateState] = useState({
@@ -26,7 +27,7 @@ const ApplicationForm = props => {
                 if(error) throw new Error(error.message);
                 props.history.push("/positions");
             })
-            .catch(error => console.log("Error: ", error.message));
+            .catch(error => props.openModalHandler(error.message));
     }
     
     return (
@@ -47,4 +48,4 @@ const ApplicationForm = props => {
     )
 }
 
-export default ApplicationForm;
+export default withErrorModal(ApplicationForm);

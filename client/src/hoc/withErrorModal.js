@@ -1,5 +1,5 @@
 import React, {useState, Fragment} from "react";
-import Modal from "../components/UI/modal";
+import Modal from "../components/UI/Modal";
 
 const withErrorModal = PassedComponent => {
     return props => {
@@ -14,7 +14,7 @@ const withErrorModal = PassedComponent => {
         
         return (
             <Fragment>
-                <Modal open={modalState.isOpen} label="Error" closeLabel="Okay" onClose={closeHandler}>
+                <Modal open={modalState.isOpen} label="Error" closeLabel="Okay" closeHandler={closeHandler}>
                     {modalState.message}
                 </Modal>
                 <PassedComponent openModalHandler={openHandler} {...props} />

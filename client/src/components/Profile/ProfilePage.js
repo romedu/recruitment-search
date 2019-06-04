@@ -4,6 +4,7 @@ import UserContext from "../../context/user-context";
 import UserFields from "./UserFields";
 import CompanyFields from "./CompanyFields";
 import PersonFields from "./PersonFields";
+import withErrorModal from "../../hoc/withErrorModal";
 
 const ProfilePage = props => {
     const userContext = useContext(UserContext),
@@ -23,8 +24,8 @@ const ProfilePage = props => {
                 if(error) throw new Error(error.message);
                 setProfileState({ userData: user })
             })
-            .catch(error => console.log("Error: ", error.message))
-    }, [userContext, props.match])
+            .catch(error => props.openModalHandler(error.message))
+    }, [userContext, props])
     
     if(profileState.userData){
         const {name, nationalId, isCompany, positions} = profileState.userData;
@@ -56,4 +57,4 @@ const ProfilePage = props => {
     )
 }
 
-export default ProfilePage;
+export default withErrorModal(ProfilePage);

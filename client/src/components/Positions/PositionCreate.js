@@ -3,6 +3,7 @@ import InputField from "../UI/InputField";
 import {getFetchOptions} from "../../utils/fetchUtils";
 import {updateTextInput} from "../../utils/InputHandlers";
 import Button from "../UI/Button";
+import withErrorModal from "../../hoc/withErrorModal";
 
 const PositionCreate = props => {
     const [positionState, setPositionState] = useState({
@@ -26,7 +27,7 @@ const PositionCreate = props => {
                 if(error) throw new Error(error.message);
                 props.history.push(`/positions/${newPosition._id}`);
             })
-            .catch(error => console.log("Error: ", error.message))
+            .catch(error => props.openModalHandler(error.message))
     }
     
     return (
@@ -55,4 +56,4 @@ const PositionCreate = props => {
     )
 }
 
-export default PositionCreate;
+export default withErrorModal(PositionCreate);

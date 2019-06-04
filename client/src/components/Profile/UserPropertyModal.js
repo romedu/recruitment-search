@@ -5,6 +5,7 @@ import InputField from "../UI/InputField";
 import Button from "../UI/Button";
 import UserContext from "../../context/user-context";
 import {getFetchOptions} from "../../utils/fetchUtils";
+import withErrorModal from "../../hoc/withErrorModal";
 
 const UserPropertyModal = props => {
    const {resourceName} = props.match.params,
@@ -27,7 +28,7 @@ const UserPropertyModal = props => {
             if(error) throw new Error(error.message);
             props.history.push("/my-profile");
          })
-         .catch(error => console.log("Error: ", error.message))
+         .catch(error => props.openModalHandler(error.message))
    }
 
    return (
@@ -50,4 +51,4 @@ const UserPropertyModal = props => {
    )
 }
 
-export default UserPropertyModal;
+export default withErrorModal(UserPropertyModal);

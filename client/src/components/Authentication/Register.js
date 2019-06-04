@@ -5,8 +5,9 @@ import Button from "../UI/Button";
 import {getFetchOptions} from "../../utils/fetchUtils";
 import {updateTextInput, updateCheckboxInput} from "../../utils/InputHandlers";
 import UserContext from "../../context/user-context";
+import withErrorModal from "../../hoc/withErrorModal";
 
-const Register = () => {
+const Register = props => {
    const userContext = useContext(UserContext);
 
    const [registerState, setRegisterState] = useState({
@@ -32,7 +33,7 @@ const Register = () => {
             if(error) throw new Error(error.message);
             userContext.setUser(userData);
          })
-         .catch(error => console.log("Error: ", error.message))
+         .catch(error => props.openModalHandler(error.message))
    }
 
    return (
@@ -67,4 +68,4 @@ const Register = () => {
    )
 }
 
-export default Register;
+export default withErrorModal(Register);
