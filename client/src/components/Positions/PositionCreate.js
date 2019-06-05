@@ -1,9 +1,11 @@
 import React, {useState} from "react";
+import {Button} from '@material-ui/core';
+import Spinner from 'react-spinner-material';
 import InputField from "../UI/InputField";
 import {getFetchOptions} from "../../utils/fetchUtils";
 import {updateTextInput} from "../../utils/InputHandlers";
-import Button from "../UI/Button";
 import withErrorModal from "../../hoc/withErrorModal";
+import withLoader from "../../hoc/withLoader";
 
 const PositionCreate = props => {
     const [positionState, setPositionState] = useState({
@@ -21,13 +23,18 @@ const PositionCreate = props => {
         const token = localStorage.getItem("token"),
               fetchOptions = getFetchOptions("POST", token, positionState);
               
+        props.startLoadingHandler();      
+              
         fetch("/api/positions", fetchOptions)
             .then(response => response.json())
             .then(({error, newPosition}) => {
                 if(error) throw new Error(error.message);
                 props.history.push(`/positions/${newPosition._id}`);
             })
-            .catch(error => props.openModalHandler(error.message))
+            .catch(error => {
+                props.stopLoadingHandler();
+                props.openModalHandler(error.message);
+            })
     }
     
     return (
@@ -48,12 +55,13 @@ const PositionCreate = props => {
                 <InputField name="maximumSalary" type="number" value={positionState.maximumSalary} changeHandler={updateInputHandler} required>
                     Maximum Salary
                 </InputField>
-                <Button>
+                <Button type="submit" disabled={props.isLoading}>
                     Create
                 </Button>
             </form>
+            <Spinner size={60} spinnerColor={"#C836C3"} spinnerWidth={5} visible={props.isLoading} />
         </div>
     )
 }
 
-export default withErrorModal(PositionCreate);
+export default withErrorModal(withLoader(PositionCreate));

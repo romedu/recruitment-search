@@ -1,9 +1,11 @@
 import React, {useState} from "react";
+import {Button} from '@material-ui/core';
+import Spinner from 'react-spinner-material';
 import InputField from "../UI/InputField";
-import Button from "../UI/Button";
 import {getFetchOptions} from "../../utils/fetchUtils";
 import {updateTextInput} from "../../utils/InputHandlers";
 import withErrorModal from "../../hoc/withErrorModal";
+import withLoader from "../../hoc/withLoader";
 
 const ApplicationForm = props => {
     const [candidateState, setCandidateState] = useState({
@@ -17,17 +19,22 @@ const ApplicationForm = props => {
     const submitHandler = e => {
         e.preventDefault();
         
-        const {positionId} = props,
+        const {positionId, history, startLoadingHandler, stopLoadingHandler, openModalHandler} = props,
               token = localStorage.getItem("token"),
               fetchOptions = getFetchOptions("POST", token, candidateState);
+        
+        startLoadingHandler();
         
         fetch(`/api/positions/${positionId}/candidates`, fetchOptions)
             .then(response => response.json())
             .then(({error, candidate}) => {
                 if(error) throw new Error(error.message);
-                props.history.push("/positions");
+                history.push("/positions");
             })
-            .catch(error => props.openModalHandler(error.message));
+            .catch(error => {
+                stopLoadingHandler();
+                openModalHandler(error.message);
+            })
     }
     
     return (
@@ -41,11 +48,12 @@ const ApplicationForm = props => {
             <InputField name="recommendedBy" value={candidateState.recommendedBy} changeHandler={updateInputHandler}>
                 Recommended By:
             </InputField>
-            <Button>
+            <Button type="submit" disabled={props.isLoading}>
                 Apply
             </Button>
+            <Spinner size={60} spinnerColor={"#C836C3"} spinnerWidth={5} visible={props.isLoading} />
         </form>
     )
 }
 
-export default withErrorModal(ApplicationForm);
+export default withErrorModal(withLoader(ApplicationForm));

@@ -1,10 +1,12 @@
 import React, {useState, useEffect, useContext} from "react";
-import {getFetchOptions} from "../../utils/fetchUtils";
-import UserContext from "../../context/user-context";
+import Spinner from 'react-spinner-material';
 import UserFields from "./UserFields";
 import CompanyFields from "./CompanyFields";
 import PersonFields from "./PersonFields";
+import {getFetchOptions} from "../../utils/fetchUtils";
+import UserContext from "../../context/user-context";
 import withErrorModal from "../../hoc/withErrorModal";
+import withLoader from "../../hoc/withLoader";
 
 const ProfilePage = props => {
     const userContext = useContext(UserContext),
@@ -17,15 +19,21 @@ const ProfilePage = props => {
     useEffect(() => {
         const token = localStorage.getItem("token"),
               fetchOptions = getFetchOptions("GET", token);
+           
+        props.startLoadingHandler();   
               
         fetch(`/api/users/${userContext.id}`, fetchOptions)
             .then(response => response.json())
             .then(({error, user}) => {
                 if(error) throw new Error(error.message);
                 setProfileState({ userData: user })
+                props.stopLoadingHandler();
             })
-            .catch(error => props.openModalHandler(error.message))
-    }, [userContext, props])
+            .catch(error => {
+                props.stopLoadingHandler();
+                props.openModalHandler(error.message);
+            })
+    }, [])
     
     if(profileState.userData){
         const {name, nationalId, isCompany, positions} = profileState.userData;
@@ -53,8 +61,9 @@ const ProfilePage = props => {
                 My Profile 
             </h2>
             {content}
+            <Spinner size={60} spinnerColor={"#C836C3"} spinnerWidth={5} visible={props.isLoading} />
         </div>
     )
 }
 
-export default withErrorModal(ProfilePage);
+export default withErrorModal(withLoader(ProfilePage));

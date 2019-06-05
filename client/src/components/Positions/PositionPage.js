@@ -1,10 +1,12 @@
 import React, {useState, useEffect, useContext, Fragment} from "react";
 import {Link} from "react-router-dom";
+import {Button} from '@material-ui/core';
+import Spinner from 'react-spinner-material';
 import PositionData from "./PositionData";
-import Button from "../UI/Button";
 import UserContext from "../../context/user-context";
 import {getFetchOptions} from "../../utils/fetchUtils";
 import withErrorModal from "../../hoc/withErrorModal";
+import withLoader from "../../hoc/withLoader";
 
 const PositionPage = props => {
     const userContext = useContext(UserContext),
@@ -16,19 +18,28 @@ const PositionPage = props => {
     
     useEffect(() => {
         const {positionId} = props.match.params;
+        
+        props.startLoadingHandler();
+        
         fetch(`/api/positions/${positionId}`)
             .then(response => response.json())
             .then(({error, position}) => {
                 if(error) throw new Error(error.message);
                 setPositionState({currentPosition: position});
+                props.stopLoadingHandler();
             })
-            .catch(error => props.openModalHandler(error.message))
-    }, [props]);
+            .catch(error => {
+                props.stopLoadingHandler();
+                props.openModalHandler(error.message);
+            })
+    }, []);
     
     const deletePositionHandler = () => {
         const {positionId} = props.match.params,
               token = localStorage.getItem("token"),
               fetchOptions = getFetchOptions("DELETE", token);
+        
+        props.startLoadingHandler();
               
         fetch(`/api/positions/${positionId}`, fetchOptions)
             .then(response => response.json())
@@ -36,7 +47,10 @@ const PositionPage = props => {
                 if(error) throw new Error(error.message);
                 props.history.push("/positions");
             })
-            .catch(error => props.openModalHandler(error.message))
+            .catch(error => {
+                props.stopLoadingHandler();
+                props.openModalHandler(error.message);
+            })
     }
     
     if(positionState.currentPosition){
@@ -49,12 +63,14 @@ const PositionPage = props => {
                   {`Position: ${name}`}
                </h2>    
                <PositionData position={positionState.currentPosition} />
-               {state && userContext.id && !userContext.isCompany && <Link to={`/positions/${positionId}/application`}> Apply </Link>}
+               {state && userContext.id && !userContext.isCompany && <Link to={`/positions/${positionId}/application`}> 
+                  Apply 
+               </Link>}
                {userContext.id === companyId && <Fragment>
                     <Link to={`/positions/${positionId}/candidates`}>
                         Candidates
                     </Link>
-                    <Button action={deletePositionHandler}>
+                    <Button onClick={deletePositionHandler} disabled={props.isLoading} >
                         Delete Position
                     </Button>
                </Fragment>}
@@ -65,8 +81,9 @@ const PositionPage = props => {
     return (
         <div>
            {content}
+           <Spinner size={60} spinnerColor={"#C836C3"} spinnerWidth={5} visible={props.isLoading} />
         </div>   
     )
 }
 
-export default withErrorModal(PositionPage);
+export default withErrorModal(withLoader(PositionPage));

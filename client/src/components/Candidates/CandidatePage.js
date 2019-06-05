@@ -1,9 +1,11 @@
 import React, {useState, useEffect, useContext, Fragment} from "react";
+import Spinner from 'react-spinner-material';
+import {Button} from '@material-ui/core';
 import CandidateData from "./CandidateData";
-import Button from "../UI/Button";
 import {getFetchOptions} from "../../utils/fetchUtils";
 import UserContext from "../../context/user-context";
 import withErrorModal from "../../hoc/withErrorModal";
+import withLoader from "../../hoc/withLoader";
 
 const CandidatePage = props => {
     const userContext = useContext(UserContext),
@@ -17,15 +19,21 @@ const CandidatePage = props => {
         const token = localStorage.getItem("token"),
               {positionId, candidateId} = props.match.params,
               fetchOptions = getFetchOptions("GET", token);
-              
+        
+        props.startLoadingHandler();
+          
         fetch(`/api/positions/${positionId}/candidates/${candidateId}`, fetchOptions)
             .then(response => response.json())
             .then(({error, candidate}) => {
                 if(error) throw new Error(error.message);
                 setCandidateState({currentCandidate: candidate});
+                props.stopLoadingHandler();
             })
-            .catch(error => props.openModalHandler(error.message))
-    }, [props])
+            .catch(error => {
+                props.stopLoadingHandler();
+                props.openModalHandler(error.message);
+            })
+    }, [])
     
     const hireCandidate = () => {
         const token = localStorage.getItem("token"),
@@ -37,6 +45,8 @@ const CandidatePage = props => {
                 userData: userData._id
               },
               fetchOptions = getFetchOptions("POST", token, newCandidateBody);
+         
+        props.startLoadingHandler();  
               
         fetch(`/api/users/${userContext.id}/employees`, fetchOptions)
             .then(response => response.json())
@@ -44,13 +54,18 @@ const CandidatePage = props => {
                 if(error) throw new Error(error.message);
                 deleteCandidate();
             })
-            .catch(error => props.openModalHandler(error.message))
+            .catch(error => {
+                props.stopLoadingHandler();
+                props.openModalHandler(error.message);
+             })
     }
     
     const deleteCandidate = () => {
         const token = localStorage.getItem("token"),
               {positionId, candidateId} = props.match.params,
               fetchOptions = getFetchOptions("DELETE", token);
+
+        if(!props.isLoading) props.startLoadingHandler();
 
         fetch(`/api/positions/${positionId}/candidates/${candidateId}`, fetchOptions)
             .then(response => response.json())
@@ -59,7 +74,10 @@ const CandidatePage = props => {
                 if(userContext.isCompany) props.history.push(`/positions/${positionId}/candidates`);
                 else props.history.push("/my-profile");
             })
-            .catch(error => props.openModalHandler(error.message))
+            .catch(error => {
+                props.stopLoadingHandler();
+                props.openModalHandler(error.message);
+             })
     }
     
     if(candidateState.currentCandidate){
@@ -67,14 +85,14 @@ const CandidatePage = props => {
         
         content = (
             <Fragment>
-               <h2>
-                  {`Position Application: "${position.name}"`}
-               </h2>    
+               <h3>
+                  "{position.name}"
+               </h3>
                {candidateState.currentCandidate && <CandidateData candidate={candidateState.currentCandidate} />}
-               {userContext.isCompany && <Button action={hireCandidate}>
+               {userContext.isCompany && <Button color="primary" onClick={hireCandidate} disabled={props.isLoading} >
                   Hire Candidate
                </Button>}
-               <Button action={deleteCandidate}>
+               <Button color="primary" onClick={deleteCandidate} disabled={props.isLoading} >
                   {userContext.isCompany ? "Decline Candidate" : "Delete application"}
                </Button>
             </Fragment>
@@ -83,9 +101,13 @@ const CandidatePage = props => {
     
     return (
         <div>
+           <h2>
+              Position Application
+           </h2>   
            {content}
+           <Spinner size={60} spinnerColor={"#C836C3"} spinnerWidth={5} visible={props.isLoading} />
         </div>   
     )
 }
 
-export default withErrorModal(CandidatePage);
+export default withErrorModal(withLoader(CandidatePage));

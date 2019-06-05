@@ -1,11 +1,13 @@
 import React, {useState, useContext} from "react";
 import {Link} from "react-router-dom";
+import Spinner from 'react-spinner-material';
 import InputField from "../UI/InputField";
-import Button from "../UI/Button";
+import {Button} from '@material-ui/core';
 import {getFetchOptions} from "../../utils/fetchUtils";
 import {updateTextInput, updateCheckboxInput} from "../../utils/InputHandlers";
 import UserContext from "../../context/user-context";
 import withErrorModal from "../../hoc/withErrorModal";
+import withLoader from "../../hoc/withLoader";
 
 const Register = props => {
    const userContext = useContext(UserContext);
@@ -27,13 +29,18 @@ const Register = props => {
       e.preventDefault();
       const fetchOptions = getFetchOptions("POST", null, registerState);
 
+      props.startLoadingHandler();
+
       fetch("/api/auth/register", fetchOptions)
          .then(response => response.json())
          .then(({error, ...userData}) => {
             if(error) throw new Error(error.message);
             userContext.setUser(userData);
          })
-         .catch(error => props.openModalHandler(error.message))
+         .catch(error => {
+            props.stopLoadingHandler();
+            props.openModalHandler(error.message);
+         })
    }
 
    return (
@@ -57,15 +64,16 @@ const Register = props => {
             <InputField type="checkbox" name="isCompany" value={registerState.isCompany} changeHandler={updateInputHandler}>
                Are you representing a company?
             </InputField>
-            <Button>
+            <Button type="submit" disabled={props.isLoading}>
                Submit
             </Button>
          </form>
          <Link to="/authentication/login">
             Already an user?
          </Link>
+         <Spinner size={60} spinnerColor={"#C836C3"} spinnerWidth={5} visible={props.isLoading} />
       </div>
    )
 }
 
-export default withErrorModal(Register);
+export default withErrorModal(withLoader(Register));

@@ -1,11 +1,13 @@
 import React, {useState, useContext, Fragment} from "react";
+import {Button} from '@material-ui/core';
+import Spinner from 'react-spinner-material';
 import {updateTextInput} from "../../utils/InputHandlers";
 import Backdrop from "../UI/Backdrop/Backdrop";
 import InputField from "../UI/InputField";
-import Button from "../UI/Button";
 import UserContext from "../../context/user-context";
 import {getFetchOptions} from "../../utils/fetchUtils";
 import withErrorModal from "../../hoc/withErrorModal";
+import withLoader from "../../hoc/withLoader";
 
 const UserPropertyModal = props => {
    const {resourceName} = props.match.params,
@@ -22,13 +24,18 @@ const UserPropertyModal = props => {
       const token = localStorage.getItem("token"),
             fetchOptions = getFetchOptions("POST", token, propertyState);
 
+      props.startLoadingHandler();
+
       fetch(`/api/users/${userContext.id}/${resourceName}`, fetchOptions)
          .then(response => response.json())
          .then(({error}) => {
             if(error) throw new Error(error.message);
             props.history.push("/my-profile");
          })
-         .catch(error => props.openModalHandler(error.message))
+         .catch(error => {
+            props.stopLoadingHandler();
+            props.openModalHandler(error.message);
+         })
    }
 
    return (
@@ -42,13 +49,14 @@ const UserPropertyModal = props => {
                <InputField name={propertyName} value={propertyState[propertyName]} changeHandler={updateInputHandler} required>
                   {propertyName.toUpperCase()}
                </InputField>
-               <Button>
+               <Button type="submit" disabled={props.isLoading}>
                   {`Create ${resourceName}`}
                </Button>
             </form>
+            <Spinner size={60} spinnerColor={"#C836C3"} spinnerWidth={5} visible={props.isLoading} />
          </div>
       </Fragment>
    )
 }
 
-export default withErrorModal(UserPropertyModal);
+export default withErrorModal(withLoader(UserPropertyModal));
