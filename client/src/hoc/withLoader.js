@@ -2,7 +2,7 @@ import React, {useState} from "react";
 
 const withLoader = PassedComponent => {
     return props => {
-        const [spinnerState, setSpinnerState] = useState({ isLoading: true });
+        const [spinnerState, setSpinnerState] = useState({ isLoading: false });
         
         const startLoadingHandler = () => setSpinnerState({ isLoading: true });
         
