@@ -1,5 +1,4 @@
 import React, {useState} from "react";
-import Spinner from 'react-spinner-material';
 
 const withLoader = PassedComponent => {
     return props => {
@@ -10,8 +9,10 @@ const withLoader = PassedComponent => {
         const stopLoadingHandler = () => setSpinnerState({ isLoading: false });
         
         return (
-            spinnerState.isLoading ? <Spinner size={120} spinnerColor={"#333"} spinnerWidth={2} /> 
-                                   : <PassedComponent startLoadingHandler={startLoadingHandler} stopLoadingHandler={stopLoadingHandler} {...props} />
+            <PassedComponent isLoading={spinnerState.isLoading} 
+                             startLoadingHandler={startLoadingHandler} 
+                             stopLoadingHandler={stopLoadingHandler} 
+                             {...props} />
         )
     }
 }
