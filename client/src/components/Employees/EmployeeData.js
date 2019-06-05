@@ -6,7 +6,7 @@ const EmployeeData = ({employee}) => (
        <FieldData title="Name" description={employee.userData.name} />
        <FieldData title="Monthly Salary" description={`${employee.monthlySalary}$`} />
        <FieldData title="Department" description={employee.department} />
-       <FieldData title="Company Name" description={employee.company.name} />
+       <FieldData title="Company Representative" description={employee.company.name} />
     </div>
 );
 

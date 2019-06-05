@@ -2,6 +2,7 @@ import React, {useState, useEffect, useContext} from "react";
 import EmployeesList from "./EmployeesList";
 import {getFetchOptions} from "../../utils/fetchUtils";
 import UserContext from "../../context/user-context";
+import withErrorModal from "../../hoc/withErrorModal";
 
 const Employees = () => {
    const userContext = useContext(UserContext),
@@ -19,9 +20,7 @@ const Employees = () => {
             if(error) throw new Error(error.message);
             setEmployeeState({employees});
          })
-         .catch(error => {
-            console.log("Create modal: ", error.message);
-         })
+         .catch(error => props.openModalHandler(error.message))
    }, [userContext.id])
 
    return (
@@ -34,4 +33,4 @@ const Employees = () => {
    )
 }
 
-export default Employees;
+export default withErrorModal(Employees);

@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from "react";
 import CandidatesList from "./CandidatesList";
 import {getFetchOptions} from "../../utils/fetchUtils";
+import withErrorModal from "../../hoc/withErrorModal";
 
 const Candidates = props => {
    const {positionId} = props.match.params, 
@@ -18,10 +19,8 @@ const Candidates = props => {
             if(error) throw new Error(error.message);
             setCandidatesState({candidates});
          })
-         .catch(error => {
-            console.log("Create modal: ", error.message);
-         })
-   }, [positionId])
+         .catch(error => props.openModalHandler(error.message))
+   }, [positionId, props])
 
    return (
       <div>
@@ -33,4 +32,4 @@ const Candidates = props => {
    )
 }
 
-export default Candidates;
+export default withErrorModal(Candidates);

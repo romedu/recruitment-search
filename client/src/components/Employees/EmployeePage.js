@@ -3,6 +3,7 @@ import EmployeeData from "./EmployeeData";
 import Button from "../UI/Button";
 import {getFetchOptions} from "../../utils/fetchUtils";
 import UserContext from "../../context/user-context";
+import withErrorModal from "../../hoc/withErrorModal";
 
 const EmployeePage = props => {
     const userContext = useContext(UserContext),
@@ -23,10 +24,8 @@ const EmployeePage = props => {
                 if(error) throw new Error(error.message);
                 setEmployeeState({currentEmployee: employee});
             })
-            .catch(error => {
-                console.log("Error: " + error.message);
-            })
-    }, [props.match, userContext.id])
+            .catch(error => props.openModalHandler(error.message))
+    }, [props, userContext.id])
     
     const fireEmployee = () => {
         const token = localStorage.getItem("token"),
@@ -39,9 +38,7 @@ const EmployeePage = props => {
                 if(error) throw new Error(error.message);
                 props.history.push("/my-employees");
             })
-            .catch(error => {
-                console.log("Error: " + error.message);
-            })
+            .catch(error => props.openModalHandler(error.message))
     }
     
     if(employeeState.currentEmployee){
@@ -65,4 +62,4 @@ const EmployeePage = props => {
     )
 }
 
-export default EmployeePage;
+export default withErrorModal(EmployeePage);

@@ -2,6 +2,7 @@ import React, {useState, useEffect, useContext} from "react";
 import {Link} from "react-router-dom";
 import PositionsList from "./PositionsList";
 import UserContext from "../../context/user-context";
+import withErrorModal from "../../hoc/withErrorModal";
 
 const Positions = () => {
    const userContext = useContext(UserContext),
@@ -16,9 +17,7 @@ const Positions = () => {
             if(error) throw new Error(error.message);
             setPositionState({positions});
          })
-         .catch(error => {
-            console.log("Create modal: ", error.message);
-         })
+         .catch(error => props.openModalHandler(error.message))
    }, [])
 
    return (
@@ -32,4 +31,4 @@ const Positions = () => {
    )
 }
 
-export default Positions;
+export default withErrorModal(Positions);
