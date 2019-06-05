@@ -4,7 +4,7 @@ import {getFetchOptions} from "../../utils/fetchUtils";
 import UserContext from "../../context/user-context";
 import withErrorModal from "../../hoc/withErrorModal";
 
-const Employees = () => {
+const Employees = props => {
    const userContext = useContext(UserContext),
          [employeesState, setEmployeeState] = useState({
       employees: null
@@ -21,7 +21,7 @@ const Employees = () => {
             setEmployeeState({employees});
          })
          .catch(error => props.openModalHandler(error.message))
-   }, [userContext.id])
+   }, [userContext.id, props])
 
    return (
       <div>

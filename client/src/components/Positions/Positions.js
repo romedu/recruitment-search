@@ -4,7 +4,7 @@ import PositionsList from "./PositionsList";
 import UserContext from "../../context/user-context";
 import withErrorModal from "../../hoc/withErrorModal";
 
-const Positions = () => {
+const Positions = props => {
    const userContext = useContext(UserContext),
          [positionsState, setPositionState] = useState({
             positions: null
@@ -18,7 +18,7 @@ const Positions = () => {
             setPositionState({positions});
          })
          .catch(error => props.openModalHandler(error.message))
-   }, [])
+   }, [props])
 
    return (
       <div>
