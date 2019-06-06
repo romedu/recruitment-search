@@ -3,15 +3,21 @@ import {FormControl, InputLabel, NativeSelect, TextField, Input} from '@material
 import {capitalizeString} from "../../utils/stringUtils";
 
 const SearchBar = props => {
+   // An empty string is added to the beggining of the options list
+   // To make sure no value is selected by default
+   props.options.unshift("");
    const options = props.options.map((option, index) => <option key={option + index} value={option}> {capitalizeString(option)} </option>);
-
    return (
-      <form autoComplete="off">
+      <form autoComplete="off" onSubmit={props.submitHandler}>
          <FormControl>
             <InputLabel shrink htmlFor="property-placeholder">
                Property
             </InputLabel>
-            <NativeSelect value={props.selectOption} onChange={props.changeHandler} input={<Input name="property" id="property-placeholder" />}>
+            <NativeSelect value={props.selectOption}
+                          onChange={props.changeHandler}
+                          required
+                          input={<Input name="selectOption" id="property-placeholder" />}
+            >
                {options}
             </NativeSelect>
          </FormControl>
@@ -19,6 +25,7 @@ const SearchBar = props => {
             <TextField id="search-bar-input"
                        label="Search"
                        type="test"
+                       name="searchInput"
                        margin="normal"
                        onChange={props.changeHandler}
                        value={props.searchInput} 
