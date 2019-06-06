@@ -1,4 +1,5 @@
 const mongoose = require("mongoose"),
+      mongoosePaginate = require('mongoose-paginate-v2'),
       employeeSchema = new mongoose.Schema({
          startingDate: {
             type: Date,
@@ -31,5 +32,7 @@ const mongoose = require("mongoose"),
             required: true
          }
       });
+
+mongoose.plugin(mongoosePaginate);
 
 module.exports = mongoose.model("Employee", employeeSchema);

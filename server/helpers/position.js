@@ -5,8 +5,13 @@ const mongoose                    = require("mongoose"),
 
 exports.getPositions = async (req, res, next) => {
    try {
-      const queryObject = createQueryObj(req.query),
-            positions = await Position.find(queryObject);
+      const {page, limit, ...queryParams} = req.query,
+            queryOptions = {
+               page: page || 1, 
+               limit: limit || 10
+            },
+            queryObject = createQueryObj(queryParams),
+            positions = await Position.paginate(queryObject, queryOptions);
 
       if(!positions) throw createError(404, "Not Found");
 

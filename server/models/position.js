@@ -1,4 +1,5 @@
 const mongoose = require("mongoose"),
+      mongoosePaginate = require('mongoose-paginate-v2'),
       positionSchema = new mongoose.Schema({
          name: {
             type: String,
@@ -25,5 +26,7 @@ const mongoose = require("mongoose"),
             ref: "User"
          }
       });
+
+mongoose.plugin(mongoosePaginate);
 
 module.exports = mongoose.model("Position", positionSchema);

@@ -1,4 +1,5 @@
 const mongoose = require("mongoose"),
+      mongoosePaginate = require('mongoose-paginate-v2'),
       candidateSchema = new mongoose.Schema({
          position: {
             type: mongoose.Schema.Types.ObjectId,
@@ -23,5 +24,7 @@ const mongoose = require("mongoose"),
             required: true
          }
       });
+      
+mongoose.plugin(mongoosePaginate);
 
 module.exports = mongoose.model("Candidate", candidateSchema);

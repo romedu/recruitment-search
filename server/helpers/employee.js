@@ -4,8 +4,13 @@ const {Employee} = require("../models"),
 
 exports.getEmployees = async (req, res, next) => {
    try {
-      const queryObject = createQueryObj(req.query),
-            employees = await Employee.find({...queryObject, company: req.params.userId});
+      const {page, limit, ...queryParams} = req.query,
+            queryOptions = {
+               page: page || 1, 
+               limit: limit || 10
+            },
+            queryObject = createQueryObj(queryParams),
+            employees = await Employee.paginate({...queryObject, company: req.params.userId}, queryOptions);
             
       if(!employees) throw createError(404, "Not Found");
       return res.status(200).json({employees});
