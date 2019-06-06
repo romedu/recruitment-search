@@ -1,5 +1,6 @@
 import React, {useState, useEffect, useContext} from "react";
 import {Link} from "react-router-dom";
+import {Button} from '@material-ui/core';
 import Spinner from 'react-spinner-material';
 import PositionsList from "./PositionsList";
 import SearchBar from "../UI/SearchBar";
@@ -49,6 +50,9 @@ const Positions = props => {
                     searchInput={props.searchInputValue} 
                     changeHandler={props.updateSearchInput}
                     submitHandler={submitSearchHandler} />
+         <Button color="primary" onClick={() => searchPositions("/api/positions")}>
+            Clear search
+         </Button>
          {userContext.isCompany && <Link to={`/positions/create`}> Create a position </Link>}
          {positionsState.positions && <PositionsList positions={positionsState.positions} />}
          <Spinner size={60} spinnerColor={"#C836C3"} spinnerWidth={5} visible={props.isLoading} />

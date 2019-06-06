@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from "react";
 import Spinner from 'react-spinner-material';
+import {Button} from '@material-ui/core';
 import CandidatesList from "./CandidatesList";
 import SearchBar from "../UI/SearchBar";
 import {getFetchOptions} from "../../utils/fetchUtils";
@@ -52,6 +53,9 @@ const Candidates = props => {
                     searchInput={props.searchInputValue} 
                     changeHandler={props.updateSearchInput}
                     submitHandler={submitSearchHandler} />
+         <Button color="primary" onClick={() => searchCandidates(`/api/positions/${positionId}/candidates`)}>
+            Clear search
+         </Button>
          {candidatesState.candidates && <CandidatesList positionId={positionId} candidates={candidatesState.candidates} />}
          <Spinner size={60} spinnerColor={"#C836C3"} spinnerWidth={5} visible={props.isLoading} />
       </div>
