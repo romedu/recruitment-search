@@ -1,10 +1,12 @@
 const mongoose                    = require("mongoose"),
       {User, Position, Candidate} = require("../models"),
-      {createError}               = require("./error");
+      {createError}               = require("./error"),
+      {createQueryObj}            = require("./utilities");
 
 exports.getPositions = async (req, res, next) => {
    try {
-      const positions = await Position.find({});
+      const queryObject = createQueryObj(req.query),
+            positions = await Position.find(queryObject);
 
       if(!positions) throw createError(404, "Not Found");
 

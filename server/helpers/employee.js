@@ -1,9 +1,12 @@
 const {Employee} = require("../models"),
-      {createError} = require("./error");
+      {createError} = require("./error"),
+      {createQueryObj} = require("./utilities");
 
 exports.getEmployees = async (req, res, next) => {
    try {
-      const employees = await Employee.find({company: req.params.userId});
+      const queryObject = createQueryObj(req.query),
+            employees = await Employee.find({...queryObject, company: req.params.userId});
+            
       if(!employees) throw createError(404, "Not Found");
       return res.status(200).json({employees});
    }
