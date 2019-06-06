@@ -21,7 +21,13 @@ const Candidates = props => {
    
    const submitSearchHandler = async e => {
       e.preventDefault();
+      setCandidatesState({candidates: null});
       await searchCandidates(`/api/positions/${positionId}/candidates?${props.searchOption}=${props.searchInputValue}`);
+   }
+   
+   const resetSearchHandler = () => {
+      setCandidatesState({candidates: null});
+      searchCandidates(`/api/positions/${positionId}/candidates`);
    }
    
    const searchCandidates = searchUrl => {
@@ -53,7 +59,7 @@ const Candidates = props => {
                     searchInput={props.searchInputValue} 
                     changeHandler={props.updateSearchInput}
                     submitHandler={submitSearchHandler} />
-         <Button color="primary" onClick={() => searchCandidates(`/api/positions/${positionId}/candidates`)}>
+         <Button color="primary" onClick={resetSearchHandler}>
             Clear search
          </Button>
          {candidatesState.candidates && <CandidatesList positionId={positionId} candidates={candidatesState.candidates} />}

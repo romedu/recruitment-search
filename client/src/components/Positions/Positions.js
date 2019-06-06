@@ -22,7 +22,13 @@ const Positions = props => {
    
    const submitSearchHandler = async e => {
       e.preventDefault();
+      setPositionState({positions: null});
       await searchPositions(`/api/positions?${props.searchOption}=${props.searchInputValue}`);
+   }
+   
+   const resetSearchHandler = () => {
+      setPositionState({positions: null});
+      searchPositions("/api/positions");
    }
    
    const searchPositions = searchUrl => {
@@ -50,7 +56,7 @@ const Positions = props => {
                     searchInput={props.searchInputValue} 
                     changeHandler={props.updateSearchInput}
                     submitHandler={submitSearchHandler} />
-         <Button color="primary" onClick={() => searchPositions("/api/positions")}>
+         <Button color="primary" onClick={resetSearchHandler}>
             Clear search
          </Button>
          {userContext.isCompany && <Link to={`/positions/create`}> Create a position </Link>}

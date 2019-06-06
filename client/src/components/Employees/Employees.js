@@ -22,7 +22,13 @@ const Employees = props => {
    
    const submitSearchHandler = async e => {
       e.preventDefault();
+      setEmployeeState({employees: null});
       await searchEmployees(`/api/users/${userContext.id}/employees?${props.searchOption}=${props.searchInputValue}`);
+   }
+   
+   const resetSearchHandler = () => {
+      setEmployeeState({employees: null});
+      searchEmployees(`/api/users/${userContext.id}/employees`);
    }
    
    const searchEmployees = searchUrl => {
@@ -54,7 +60,7 @@ const Employees = props => {
                     searchInput={props.searchInputValue} 
                     changeHandler={props.updateSearchInput}
                     submitHandler={submitSearchHandler} />
-         <Button color="primary" onClick={() => searchEmployees(`/api/users/${userContext.id}/employees`)}>
+         <Button color="primary" onClick={resetSearchHandler}>
             Clear search
          </Button>
          {employeesState.employees && <EmployeesList employees={employeesState.employees} />}
