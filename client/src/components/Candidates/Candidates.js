@@ -11,26 +11,36 @@ import withSearchBar from "../../hoc/withSearchBar";
 const Candidates = props => {
    const {positionId} = props.match.params, 
          [candidatesState, setCandidatesState] = useState({
-          candidates: null
+            candidates: null,
+            nextPage: 1,
+            isDataFiltered: false
          });
    
    useEffect(() => {
-      const searchCandidatesCall = async () => await searchCandidates(`/api/positions/${positionId}/candidates`);
+      const searchCandidatesCall = async () => await searchCandidates(`/api/positions/${positionId}/candidates?page=1`, true);
       searchCandidatesCall();
    }, []);
    
    const submitSearchHandler = async e => {
       e.preventDefault();
-      setCandidatesState({candidates: null});
-      await searchCandidates(`/api/positions/${positionId}/candidates?${props.searchOption}=${props.searchInputValue}`);
+      setCandidatesState({
+         candidates: null,
+         nextPage: 1,
+         isDataFiltered: true
+      });
+      await searchCandidates(`/api/positions/${positionId}/candidates?${props.searchOption}=${props.searchInputValue}&page=1`, true);
    }
    
    const resetSearchHandler = () => {
-      setCandidatesState({candidates: null});
-      searchCandidates(`/api/positions/${positionId}/candidates`);
+      setCandidatesState({
+         candidates: null,
+         nextPage: 1,
+         isDataFiltered: false
+      });
+      searchCandidates(`/api/positions/${positionId}/candidates?page=1`, true);
    }
    
-   const searchCandidates = searchUrl => {
+   const searchCandidates = (searchUrl, isReplacingData) => {
       const token = localStorage.getItem("token"),
             fetchOptions = getFetchOptions("GET", token);
             
@@ -40,7 +50,12 @@ const Candidates = props => {
          .then(response => response.json())
          .then(({error, candidates}) => {
             if(error) throw new Error(error.message);
-            setCandidatesState({candidates});
+            if(isReplacingData) setCandidatesState(prevState => ({...prevState, candidates: candidates.docs, nextPage: candidates.nextPage}));
+            else setCandidatesState(prevState => ({
+               ...prevState,
+               candidates: candidatesState.candidates.concat(candidates.docs), 
+               nextPage: candidates.nextPage
+            }));
             props.stopLoadingHandler();
          })
          .catch(error => {
@@ -48,6 +63,17 @@ const Candidates = props => {
             props.openModalHandler(error.message);
          })
    }
+   
+   window.onscroll = () => {
+      const {nextPage, isDataFiltered} = candidatesState,
+            bottomScrollPosition = document.documentElement.offsetHeight,
+            currentScrollPosition = window.innerHeight + document.documentElement.scrollTop;
+      
+      if (currentScrollPosition === bottomScrollPosition && !props.isLoading && nextPage){
+         if(isDataFiltered) searchCandidates(`/api/positions/${positionId}/candidates?${props.searchOption}=${props.searchInputValue}&page=${nextPage}`);
+         else searchCandidates(`/api/positions/${positionId}/candidates?page=${nextPage}`);
+      }
+   };
 
    return (
       <div>

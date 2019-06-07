@@ -12,26 +12,36 @@ import withSearchBar from "../../hoc/withSearchBar";
 const Employees = props => {
    const userContext = useContext(UserContext),
          [employeesState, setEmployeeState] = useState({
-      employees: null
-   });
+            employees: null,
+            nextPage: 1,
+            isDataFiltered: false
+         });
    
    useEffect(() => {
-      const searchEmployeesCall = async () => await searchEmployees(`/api/users/${userContext.id}/employees`);
+      const searchEmployeesCall = () => searchEmployees(`/api/users/${userContext.id}/employees?page=1`, true);
       searchEmployeesCall();
    }, []);
    
-   const submitSearchHandler = async e => {
+   const submitSearchHandler = e => {
       e.preventDefault();
-      setEmployeeState({employees: null});
-      await searchEmployees(`/api/users/${userContext.id}/employees?${props.searchOption}=${props.searchInputValue}`);
+      setEmployeeState({
+         employees: null, 
+         nextPage: 1,
+         isDataFiltered: true
+      });
+      searchEmployees(`/api/users/${userContext.id}/employees?${props.searchOption}=${props.searchInputValue}&page=1`, true);
    }
    
    const resetSearchHandler = () => {
-      setEmployeeState({employees: null});
-      searchEmployees(`/api/users/${userContext.id}/employees`);
+      setEmployeeState({
+         employees: null, 
+         nextPage: 1,
+         isDataFiltered: false
+      });
+      searchEmployees(`/api/users/${userContext.id}/employees?page=1`, true);
    }
    
-   const searchEmployees = searchUrl => {
+   const searchEmployees = (searchUrl, isReplacingData) => {
       const token = localStorage.getItem("token"),
             fetchOptions = getFetchOptions("GET", token);
             
@@ -41,7 +51,12 @@ const Employees = props => {
          .then(response => response.json())
          .then(({error, employees}) => {
             if(error) throw new Error(error.message);
-            setEmployeeState({employees});
+            if(isReplacingData) setEmployeeState(prevState => ({...prevState, employees: employees.docs, nextPage: employees.nextPage}));
+            else setEmployeeState(prevState => ({
+               ...prevState,
+               employees: employeesState.employees.concat(employees.docs), 
+               nextPage: employees.nextPage
+            }));
             props.stopLoadingHandler();
          })
          .catch(error => {
@@ -49,6 +64,17 @@ const Employees = props => {
             props.openModalHandler(error.message);
          })
    }
+   
+   window.onscroll = () => {
+      const {nextPage, isDataFiltered} = employeesState,
+            bottomScrollPosition = document.documentElement.offsetHeight,
+            currentScrollPosition = window.innerHeight + document.documentElement.scrollTop;
+      
+      if (currentScrollPosition === bottomScrollPosition && !props.isLoading && nextPage){
+         if(isDataFiltered) searchEmployees(`/api/users/${userContext.id}/employees?${props.searchOption}=${props.searchInputValue}&page=${nextPage}`);
+         else searchEmployees(`/api/users/${userContext.id}/employees?page=${nextPage}`);
+      }
+   };
 
    return (
       <div>

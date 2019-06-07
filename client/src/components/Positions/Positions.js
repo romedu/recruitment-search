@@ -12,32 +12,47 @@ import withSearchBar from "../../hoc/withSearchBar";
 const Positions = props => {
    const userContext = useContext(UserContext),
          [positionsState, setPositionState] = useState({
-            positions: null
+            positions: null,
+            nextPage: 1,
+            isDataFiltered: false
          });
 
    useEffect(() => {
-      const searchPositionsCall = async () => await searchPositions("/api/positions");
+      const searchPositionsCall = () => searchPositions("/api/positions?page=1", true);
       searchPositionsCall();
    }, []);
    
-   const submitSearchHandler = async e => {
+   const submitSearchHandler = e => {
       e.preventDefault();
-      setPositionState({positions: null});
-      await searchPositions(`/api/positions?${props.searchOption}=${props.searchInputValue}`);
+      setPositionState({
+         positions: null, 
+         nextPage: 1,
+         isDataFiltered: true
+      });
+      searchPositions(`/api/positions?${props.searchOption}=${props.searchInputValue}&page=1`, true);
    }
    
    const resetSearchHandler = () => {
-      setPositionState({positions: null});
-      searchPositions("/api/positions");
+      setPositionState({
+         positions: null, 
+         nextPage: 1,
+         isDataFiltered: false
+      });
+      searchPositions("/api/positions?page=1", true);
    }
    
-   const searchPositions = searchUrl => {
+   const searchPositions = (searchUrl, isReplacingData) => {
       props.startLoadingHandler();
       fetch(searchUrl)
          .then(response => response.json())
          .then(({error, positions}) => {
             if(error) throw new Error(error.message);
-            setPositionState({positions});
+            if(isReplacingData) setPositionState(prevState => ({...prevState, positions: positions.docs, nextPage: positions.nextPage}));
+            else setPositionState(prevState => ({
+               ...prevState,
+               positions: positionsState.positions.concat(positions.docs), 
+               nextPage: positions.nextPage
+            }));
             props.stopLoadingHandler();
          })
          .catch(error => {
@@ -45,6 +60,17 @@ const Positions = props => {
             props.openModalHandler(error.message);
          })
    }
+   
+   window.onscroll = () => {
+      const {nextPage, isDataFiltered} = positionsState,
+            bottomScrollPosition = document.documentElement.offsetHeight,
+            currentScrollPosition = window.innerHeight + document.documentElement.scrollTop;
+      
+      if (currentScrollPosition === bottomScrollPosition && !props.isLoading && nextPage){
+         if(isDataFiltered) searchPositions(`/api/positions?${props.searchOption}=${props.searchInputValue}&page=${nextPage}`);
+         else searchPositions(`/api/positions?page=${nextPage}`);
+      }
+   };
 
    return (
       <div>
