@@ -10,7 +10,7 @@ const PositionsList = ({positions}) => {
                                                                             state={position.state} />);
    
    return (
-      <ul>
+      <ul style={{margin: 0}}>
          {positionsThumbnails}
       </ul>
    )

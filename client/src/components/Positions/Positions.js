@@ -74,7 +74,7 @@ const Positions = props => {
 
    return (
       <div>
-         <h1>
+         <h1 style={{marginTop: 0}}>
             Positions
          </h1>
          <SearchBar options={["name", "riskLevel"]} 

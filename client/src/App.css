@@ -1,4 +1,7 @@
 .App {
-  text-align: center;
   font-family: "Roboto";
+  background-color: white; 
+  min-height: 100vh;
+  padding-top: 15vh;
+  padding-bottom: 3vh
 }

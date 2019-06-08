@@ -1,0 +1,12 @@
+.NavBar {
+   position: fixed;
+   top: 0;
+   left: 0;
+   width: 100vw;
+}
+
+@media(max-width: 810px){
+   .NavBar {
+      display: none;
+   }
+}

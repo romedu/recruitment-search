@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import {BrowserRouter, Route, Switch, Redirect} from "react-router-dom";
+import {Container} from "@material-ui/core";
 import {getFetchOptions} from "./utils/fetchUtils";
 import PositionsRoutes from "./components/Positions/PositionsRoutes";
 import EmployeesRoutes from "./components/Employees/EmployeesRoutes";
@@ -7,7 +8,7 @@ import LandingPage from "./components/Landing/LandingPage";
 import ProfileRoutes from "./components/Profile/ProfileRoutes";
 import Authentication from "./components/Authentication/Authentication";
 import UserContext from "./context/user-context";
-import NavBar from './components/NavBar/NavBar/NavBar';
+import Navigation from "./components/Navigation/Navigation";
 import './App.css';
 import withErrorModal from "./hoc/withErrorModal";
 
@@ -61,27 +62,29 @@ const App = props => {
    }, [props]);
 
    return (
-      <BrowserRouter>
-         <UserContext.Provider 
-            value={{
-               id: userState.id,
-               name: userState.name,
-               isCompany: userState.isCompany,
-               setUser,
-               logoutUser
-            }}
-         >
-            <NavBar />
-            <Switch>
-               {!userState.id && !token && <Route path="/authentication" component={Authentication} />}
-               {userState.isCompany && <Route path="/my-employees" component={EmployeesRoutes} />}
-               {userState.id && <Route path="/my-profile" component={ProfileRoutes} />}
-               <Route path="/positions" component={PositionsRoutes} />
-               <Route exact path="/" component={LandingPage} />
-               <Redirect from="/authentication" to="/positions" />
-            </Switch>
-         </UserContext.Provider>
-      </BrowserRouter>
+      <Container maxWidth="md" className="App" fixed>
+         <BrowserRouter>
+            <UserContext.Provider 
+               value={{
+                  id: userState.id,
+                  name: userState.name,
+                  isCompany: userState.isCompany,
+                  setUser,
+                  logoutUser
+               }}
+            >
+               <Navigation />
+               <Switch>
+                  {!userState.id && !token && <Route path="/authentication" component={Authentication} />}
+                  {userState.isCompany && <Route path="/my-employees" component={EmployeesRoutes} />}
+                  {userState.id && <Route path="/my-profile" component={ProfileRoutes} />}
+                  <Route path="/positions" component={PositionsRoutes} />
+                  <Route exact path="/" component={LandingPage} />
+                  <Redirect from="/authentication" to="/positions" />
+               </Switch>
+            </UserContext.Provider>
+         </BrowserRouter>
+      </Container>
    );
 }
 
