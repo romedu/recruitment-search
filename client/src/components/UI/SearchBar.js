@@ -21,12 +21,12 @@ const SearchBar = props => {
                {options}
             </NativeSelect>
          </FormControl>
-         <FormControl>
+         <FormControl style={{paddingLeft: "2vw"}}>
             <TextField id="search-bar-input"
                        label="Search"
                        type="test"
                        name="searchInput"
-                       margin="normal"
+                       margin="none"
                        onChange={props.changeHandler}
                        value={props.searchInput} 
                        required />

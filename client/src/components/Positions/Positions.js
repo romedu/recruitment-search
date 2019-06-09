@@ -74,18 +74,24 @@ const Positions = props => {
 
    return (
       <div>
-         <h1 style={{marginTop: 0}}>
-            Positions
-         </h1>
-         <SearchBar options={["name", "riskLevel"]} 
-                    selectOption={props.searchOption} 
-                    searchInput={props.searchInputValue} 
-                    changeHandler={props.updateSearchInput}
-                    submitHandler={submitSearchHandler} />
-         <Button color="primary" onClick={resetSearchHandler}>
+         <div style={{padding: "0 3vw"}}>
+            <h1 style={{marginTop: 0}}>
+               Positions
+            </h1>
+            <SearchBar options={["name", "riskLevel"]} 
+                     selectOption={props.searchOption} 
+                     searchInput={props.searchInputValue} 
+                     changeHandler={props.updateSearchInput}
+                     submitHandler={submitSearchHandler} />
+         </div>
+         <Button color="secondary" onClick={resetSearchHandler} style={{margin: "0 2.5vw"}}>
             Clear search
          </Button>
-         {userContext.isCompany && <Link to={`/positions/create`}> Create a position </Link>}
+         {userContext.isCompany && <Link to={`/positions/create`} style={{display: "block", paddingLeft: "2.5vw", textDecoration: "none"}}>
+            <Button color="primary">
+               Create a position 
+            </Button>
+         </Link>}
          {positionsState.positions && <PositionsList positions={positionsState.positions} />}
          <Spinner size={60} spinnerColor={"#C836C3"} spinnerWidth={5} visible={props.isLoading} />
       </div>
