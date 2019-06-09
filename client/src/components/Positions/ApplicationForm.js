@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-import {Button} from '@material-ui/core';
+import {Button, TextField} from '@material-ui/core';
 import Spinner from 'react-spinner-material';
 import InputField from "../UI/InputField";
 import {getFetchOptions} from "../../utils/fetchUtils";
@@ -39,15 +39,50 @@ const ApplicationForm = props => {
     
     return (
         <form onSubmit={submitHandler}>
-            <InputField name="department" value={candidateState.department} changeHandler={updateInputHandler} required>
-                Department:
-            </InputField>
-            <InputField name="aspiringSalary" type="number" value={candidateState.aspiringSalary} changeHandler={updateInputHandler} required>
-                Aspiring Salary:
-            </InputField>
-            <InputField name="recommendedBy" value={candidateState.recommendedBy} changeHandler={updateInputHandler}>
-                Recommended By:
-            </InputField>
+            <TextField
+               id="outlined-full-width"
+               label="Department"
+               name="department"
+               style={{ margin: 8 }}
+               placeholder="Enter the position's department"
+               fullWidth
+               required
+               margin="normal"
+               variant="outlined"
+               onChange={updateInputHandler}
+               InputLabelProps={{
+                  shrink: true,
+               }}
+            />
+            <TextField
+               id="outlined-full-width"
+               label="Aspiring Salary"
+               name="aspiringSalary"
+               style={{ margin: 8 }}
+               placeholder="Enter your aspiring salary"
+               fullWidth
+               required
+               margin="normal"
+               variant="outlined"
+               onChange={updateInputHandler}
+               InputLabelProps={{
+                  shrink: true,
+               }}
+            />
+            <TextField
+               id="outlined-full-width"
+               label="Recommended By"
+               name="recommendedBy"
+               style={{ margin: 8 }}
+               placeholder="Who recommended you for the job?"
+               fullWidth
+               margin="normal"
+               variant="outlined"
+               onChange={updateInputHandler}
+               InputLabelProps={{
+                  shrink: true,
+               }}
+            />
             <Button type="submit" disabled={props.isLoading}>
                 Apply
             </Button>

@@ -1,8 +1,7 @@
 import React, {useState, useContext} from "react";
 import {Link} from "react-router-dom";
+import {Button, TextField, Checkbox, FormControlLabel} from '@material-ui/core';
 import Spinner from 'react-spinner-material';
-import InputField from "../UI/InputField";
-import {Button} from '@material-ui/core';
 import {getFetchOptions} from "../../utils/fetchUtils";
 import {updateTextInput, updateCheckboxInput} from "../../utils/InputHandlers";
 import UserContext from "../../context/user-context";
@@ -49,22 +48,78 @@ const Register = props => {
             Register
          </h2>
          <form onSubmit={sumbitHandler}>
-            <InputField type="text" name="name" value={registerState.name} changeHandler={updateInputHandler} required>
-                  Name
-            </InputField>
-            <InputField type="text" name="nationalId" value={registerState.nationalId} changeHandler={updateInputHandler} required>
-               National ID
-            </InputField>
-            <InputField type="text" name="username" value={registerState.username} changeHandler={updateInputHandler} required>
-               Username
-            </InputField>
-            <InputField type="password" name="password" value={registerState.password} changeHandler={updateInputHandler} required>
-               Password
-            </InputField>
-            <InputField type="checkbox" name="isCompany" value={registerState.isCompany} changeHandler={updateInputHandler}>
-               Are you representing a company?
-            </InputField>
-            <Button type="submit" disabled={props.isLoading}>
+            <TextField
+               id="outlined-full-width"
+               label="Name"
+               name="name"
+               style={{ margin: 8 }}
+               placeholder="Enter your full name"
+               fullWidth
+               required
+               margin="normal"
+               variant="outlined"
+               onChange={updateInputHandler}
+               InputLabelProps={{
+                  shrink: true,
+               }}
+            />
+            <TextField
+               id="outlined-full-width"
+               label="National ID"
+               name="nationalId"
+               style={{ margin: 8 }}
+               placeholder="Enter your National ID or Passport number"
+               fullWidth
+               required
+               margin="normal"
+               variant="outlined"
+               onChange={updateInputHandler}
+               InputLabelProps={{
+                  shrink: true,
+               }}
+            />
+            <TextField
+               id="outlined-full-width"
+               label="Username"
+               name="username"
+               style={{ margin: 8 }}
+               placeholder="Enter your username"
+               fullWidth
+               required
+               margin="normal"
+               variant="outlined"
+               onChange={updateInputHandler}
+               InputLabelProps={{
+                  shrink: true,
+               }}
+            />
+            <TextField
+               id="outlined-full-width"
+               label="Password"
+               name="password"
+               type="password"
+               style={{ margin: 8 }}
+               placeholder="Enter your password"
+               helperText="Between 8 and 15 characters"
+               fullWidth
+               required
+               margin="normal"
+               variant="outlined"
+               onChange={updateInputHandler}
+               InputLabelProps={{
+                  shrink: true,
+               }}
+            />
+            <FormControlLabel
+               name="isCompany"
+               value={registerState.isCompany}
+               checked={registerState.isCompany}
+               onChange={updateInputHandler}
+               control={<Checkbox color="primary" />}
+               label="Are you representing a company?"
+               labelPlacement="start"
+            />
+            <Button type="submit" style={{display: "block"}} disabled={props.isLoading}>
                Submit
             </Button>
          </form>

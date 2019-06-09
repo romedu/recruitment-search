@@ -1,14 +1,19 @@
 import React, {Fragment} from "react";
+import {FormControlLabel, Checkbox} from "@material-ui/core";
 import FieldData from "../UI/FieldData";
-import InputField from "../UI/InputField";
 
 const UserFields = ({name, nationalId, isCompany}) => (
     <Fragment>
         <FieldData title="Name" description={name} />
         <FieldData title="National ID" description={nationalId} />
-        <InputField name="isCompany" type="checkbox" value={isCompany} disabled>
-            Are you representing a company?
-        </InputField>
+        <FormControlLabel
+            name="isCompany"
+            checked={isCompany}
+            control={<Checkbox color="primary" />}
+            label="Are you representing a company?"
+            labelPlacement="start"
+            disabled
+         />
     </Fragment>
 )
 

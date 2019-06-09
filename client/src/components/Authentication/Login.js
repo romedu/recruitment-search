@@ -1,8 +1,7 @@
 import React, {useState, useContext} from "react";
 import {Link} from "react-router-dom";
-import {Button} from '@material-ui/core';
+import {Button, TextField} from '@material-ui/core';
 import Spinner from 'react-spinner-material';
-import InputField from "../UI/InputField";
 import {getFetchOptions} from "../../utils/fetchUtils";
 import {updateTextInput} from "../../utils/InputHandlers";
 import UserContext from "../../context/user-context";
@@ -43,12 +42,38 @@ const Login = props => {
             Login
          </h2>
          <form onSubmit={sumbitHandler}>
-            <InputField type="text" name="username" value={loginState.username} changeHandler={updateInputHandler} required>
-               Username
-            </InputField>
-            <InputField type="password" name="password" value={loginState.password} changeHandler={updateInputHandler} required>
-               Password
-            </InputField>
+            <TextField
+               id="outlined-full-width"
+               label="Username"
+               name="username"
+               style={{ margin: 8 }}
+               placeholder="Enter your username"
+               fullWidth
+               required
+               margin="normal"
+               variant="outlined"
+               onChange={updateInputHandler}
+               InputLabelProps={{
+                  shrink: true,
+               }}
+            />
+            <TextField
+               id="outlined-full-width"
+               label="Password"
+               name="password"
+               type="password"
+               style={{ margin: 8 }}
+               placeholder="Enter your password"
+               helperText="Between 8 and 15 characters"
+               fullWidth
+               required
+               margin="normal"
+               variant="outlined"
+               onChange={updateInputHandler}
+               InputLabelProps={{
+                  shrink: true,
+               }}
+            />
             <Button type="submit" disabled={props.isLoading}>
                Submit
             </Button>

@@ -1,7 +1,6 @@
 import React, {useState} from "react";
-import {Button} from '@material-ui/core';
+import {Button, TextField} from '@material-ui/core';
 import Spinner from 'react-spinner-material';
-import InputField from "../UI/InputField";
 import {getFetchOptions} from "../../utils/fetchUtils";
 import {updateTextInput} from "../../utils/InputHandlers";
 import withErrorModal from "../../hoc/withErrorModal";
@@ -43,21 +42,69 @@ const PositionCreate = props => {
                 Create Position
             </h2>
             <form onSubmit={submitHandler}>
-                <InputField name="name" value={positionState.name} changeHandler={updateInputHandler} required>
-                    Name
-                </InputField>
-                <InputField name="riskLevel" value={positionState.riskLevel} changeHandler={updateInputHandler} required>
-                    Risk Level
-                </InputField>
-                <InputField name="minimumSalary" type="number" value={positionState.minimumSalary} changeHandler={updateInputHandler} required>
-                    Minimum Salary
-                </InputField>
-                <InputField name="maximumSalary" type="number" value={positionState.maximumSalary} changeHandler={updateInputHandler} required>
-                    Maximum Salary
-                </InputField>
-                <Button type="submit" disabled={props.isLoading}>
-                    Create
-                </Button>
+               <TextField
+                  id="outlined-full-width"
+                  label="Name"
+                  name="name"
+                  style={{ margin: 8 }}
+                  placeholder="Enter the name of the position"
+                  fullWidth
+                  required
+                  margin="normal"
+                  variant="outlined"
+                  onChange={updateInputHandler}
+                  InputLabelProps={{
+                     shrink: true,
+                  }}
+               />
+               <TextField
+                  id="outlined-full-width"
+                  label="Risk Level"
+                  name="riskLevel"
+                  style={{ margin: 8 }}
+                  placeholder="Enter the position's risk level"
+                  fullWidth
+                  required
+                  margin="normal"
+                  variant="outlined"
+                  onChange={updateInputHandler}
+                  InputLabelProps={{
+                     shrink: true,
+                  }}
+               />
+               <TextField
+                  id="outlined-full-width"
+                  label="Minimum Salary"
+                  name="minimumSalary"
+                  type="number"
+                  style={{ margin: 8 }}
+                  placeholder={0}
+                  required
+                  margin="normal"
+                  variant="outlined"
+                  onChange={updateInputHandler}
+                  InputLabelProps={{
+                     shrink: true,
+                  }}
+               />
+               <TextField
+                  id="outlined-full-width"
+                  label="Maximum Salary"
+                  name="maximumSalary"
+                  type="number"
+                  style={{ margin: 8 }}
+                  placeholder={0}
+                  required
+                  margin="normal"
+                  variant="outlined"
+                  onChange={updateInputHandler}
+                  InputLabelProps={{
+                     shrink: true,
+                  }}
+               />
+               <Button style={{display: "block"}} type="submit" disabled={props.isLoading}>
+                  Create
+               </Button>
             </form>
             <Spinner size={60} spinnerColor={"#C836C3"} spinnerWidth={5} visible={props.isLoading} />
         </div>

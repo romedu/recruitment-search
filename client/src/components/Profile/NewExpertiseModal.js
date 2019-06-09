@@ -1,13 +1,12 @@
-import React, {useState, useContext, Fragment} from "react";
+import React, {useState, useContext} from "react";
 import {withRouter} from "react-router-dom";
-import {Button} from '@material-ui/core';
+import {Button, TextField} from '@material-ui/core';
 import Spinner from 'react-spinner-material';
+import Modal from "../UI/Modal";
 import {updateTextInput} from "../../utils/InputHandlers";
-import Backdrop from "../UI/Backdrop/Backdrop";
-import InputField from "../UI/InputField";
 import UserContext from "../../context/user-context";
 import {getFetchOptions} from "../../utils/fetchUtils";
-import {fromCamelToKebabCase} from "../../utils/stringUtils";
+import {fromCamelToKebabCase, capitalizeString} from "../../utils/stringUtils";
 import withErrorModal from "../../hoc/withErrorModal";
 import withLoader from "../../hoc/withLoader";
 
@@ -41,33 +40,34 @@ const NewExpertiseModal = props => {
     }
     
     const inputFields = props.properties.map((property, index) => (
-          <InputField key={property.name + index} 
-                      name={property.name} 
-                      type={property.type} 
-                      value={expertiseState[property.name]} 
-                      changeHandler={updateInputHandler} 
-                      required
-          >
-             {property.name.toUpperCase()}
-          </InputField>
+         <TextField
+            key={property.name + index}
+            id="outlined-full-width"
+            label={capitalizeString(property.name)}
+            name={property.name}
+            type={property.type}
+            style={{ margin: 8 }}
+            fullWidth
+            required
+            margin="normal"
+            variant="outlined"
+            onChange={updateInputHandler}
+            InputLabelProps={{
+               shrink: true,
+            }}
+         />
       ))
     
     return (
-        <Fragment>
-            <Backdrop show={true} hide={() => props.history.push("/my-profile")} />
-            <div style={{position: "fixed", width: "25vw", height: "25vw", top: "20vh", left: "37.5vw", zIndex: 101, backgroundColor: "white"}}>
-                <h3>
-                    Create {props.expertiseName}
-                </h3>
-                <form onSubmit={submitHandler}>
-                    {inputFields}
-                    <Button type="submit" disabled={props.isLoading}>
-                        Create expertise
-                    </Button>
-                </form>
-                <Spinner size={60} spinnerColor={"#C836C3"} spinnerWidth={5} visible={props.isLoading} />
-            </div>
-        </Fragment>
+      <Modal open={true} label={`Create ${capitalizeString(props.expertiseName)}`} closeHandler={() => props.history.push("/my-profile")}>
+            <form onSubmit={submitHandler}>
+               {inputFields}
+               <Button type="submit" disabled={props.isLoading}>
+                  Create expertise
+               </Button>
+            </form>
+            <Spinner size={60} spinnerColor={"#C836C3"} spinnerWidth={5} visible={props.isLoading} />
+      </Modal>
     )
 }
 

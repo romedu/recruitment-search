@@ -18,7 +18,7 @@ const Modal = props => (
         </DialogContent>
         <DialogActions>
             <Button onClick={props.closeHandler}>
-                {props.closeLabel}
+                {props.closeLabel || "Close"}
             </Button>
         </DialogActions>
     </Dialog>

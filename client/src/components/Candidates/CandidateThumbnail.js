@@ -17,7 +17,9 @@ const CandidateThumbnail = props => (
       </CardContent>
       <CardActions>
          <Link to={`/positions/${props.positionId}/candidates/${props.id}`}>
-            <Button size="small">Learn More</Button>
+            <Button size="small">
+               Learn More
+            </Button>
          </Link>
       </CardActions>
    </Card>
