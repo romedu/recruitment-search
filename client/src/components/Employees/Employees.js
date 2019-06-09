@@ -67,10 +67,10 @@ const Employees = props => {
    
    window.onscroll = () => {
       const {nextPage, isDataFiltered} = employeesState,
-            bottomScrollPosition = document.documentElement.offsetHeight,
-            currentScrollPosition = window.innerHeight + document.documentElement.scrollTop;
+            bottomScrollPosition = document.body.scrollHeight,
+            currentScrollPosition = window.scrollY + window.innerHeight;
       
-      if (currentScrollPosition === bottomScrollPosition && !props.isLoading && nextPage){
+      if (currentScrollPosition >= bottomScrollPosition && !props.isLoading && nextPage){
          if(isDataFiltered) searchEmployees(`/api/users/${userContext.id}/employees?${props.searchOption}=${props.searchInputValue}&page=${nextPage}`);
          else searchEmployees(`/api/users/${userContext.id}/employees?page=${nextPage}`);
       }

@@ -66,10 +66,10 @@ const Candidates = props => {
    
    window.onscroll = () => {
       const {nextPage, isDataFiltered} = candidatesState,
-            bottomScrollPosition = document.documentElement.offsetHeight,
-            currentScrollPosition = window.innerHeight + document.documentElement.scrollTop;
+            bottomScrollPosition = document.body.scrollHeight,
+            currentScrollPosition = window.scrollY + window.innerHeight;
       
-      if (currentScrollPosition === bottomScrollPosition && !props.isLoading && nextPage){
+      if (currentScrollPosition >= bottomScrollPosition && !props.isLoading && nextPage){
          if(isDataFiltered) searchCandidates(`/api/positions/${positionId}/candidates?${props.searchOption}=${props.searchInputValue}&page=${nextPage}`);
          else searchCandidates(`/api/positions/${positionId}/candidates?page=${nextPage}`);
       }
