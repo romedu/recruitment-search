@@ -1,20 +1,26 @@
 import React from "react";
 import {Link} from "react-router-dom";
+import {Card, CardContent, CardActions, Typography, Button} from "@material-ui/core";
 
 const EmployeeThumbnail = props => (
-   <Link to={`/my-employees/${props.id}`}>
-      <li style={{border: "1px solid black"}}>
-         <h4>
+   <Card style={{margin: "2vw"}}>
+      <CardContent>
+         <Typography variant="h5" component="h2">
             {props.position}
-         </h4>
-         <div>
+         </Typography>
+         <Typography variant="body2" component="p">
             {`Monthly salary: ${props.monthlySalary}$`}
-         </div>
-         <div>
+         </Typography>
+         <Typography variant="body2" component="p">
             {`Is employee active: ${props.state}`}
-         </div>
-      </li>
-   </Link>
+         </Typography>
+      </CardContent>
+      <CardActions>
+         <Link to={`/my-employees/${props.id}`}>
+            <Button size="small">Learn More</Button>
+         </Link>
+      </CardActions>
+   </Card>
 );
 
 export default EmployeeThumbnail;

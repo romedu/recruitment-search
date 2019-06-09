@@ -9,7 +9,7 @@ const EmployeesList = ({employees}) => {
                                                                             state={employee.state} />);
    
    return (
-      <ul>
+      <ul style={{padding: 0, display: "flex", flexDirection: "row", flexWrap: "wrap", justifyContent: "space-between"}}>
          {employeesThumbnails}
       </ul>
    )
