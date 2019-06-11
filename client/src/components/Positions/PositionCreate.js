@@ -1,6 +1,7 @@
 import React, {useState} from "react";
 import {Button, TextField} from '@material-ui/core';
 import Spinner from 'react-spinner-material';
+import {checkIfEmptyInputs} from "../../utils/input-validation";
 import {getFetchOptions} from "../../utils/fetchUtils";
 import {updateTextInput} from "../../utils/InputHandlers";
 import withErrorModal from "../../hoc/withErrorModal";
@@ -35,6 +36,8 @@ const PositionCreate = props => {
                 props.openModalHandler(error.message);
             })
     }
+    
+    let areInputsInvalid = checkIfEmptyInputs(positionState);
     
     return (
         <div>
@@ -78,7 +81,6 @@ const PositionCreate = props => {
                   name="minimumSalary"
                   type="number"
                   style={{ margin: 8 }}
-                  placeholder={0}
                   required
                   margin="normal"
                   variant="outlined"
@@ -93,7 +95,6 @@ const PositionCreate = props => {
                   name="maximumSalary"
                   type="number"
                   style={{ margin: 8 }}
-                  placeholder={0}
                   required
                   margin="normal"
                   variant="outlined"
@@ -102,7 +103,7 @@ const PositionCreate = props => {
                      shrink: true,
                   }}
                />
-               <Button style={{display: "block"}} type="submit" disabled={props.isLoading}>
+               <Button style={{display: "block"}} type="submit" disabled={props.isLoading || areInputsInvalid}>
                   Create
                </Button>
             </form>

@@ -2,6 +2,7 @@ import React, {useState, useContext} from "react";
 import {Link} from "react-router-dom";
 import {Button, TextField} from '@material-ui/core';
 import Spinner from 'react-spinner-material';
+import {checkIfEmptyInputs} from "../../utils/input-validation";
 import {getFetchOptions} from "../../utils/fetchUtils";
 import {updateTextInput} from "../../utils/InputHandlers";
 import UserContext from "../../context/user-context";
@@ -35,6 +36,8 @@ const Login = props => {
             props.openModalHandler(error.message);
          })
    }
+   
+   let areInputsInvalid = checkIfEmptyInputs(loginState);
 
    return (
       <div>
@@ -43,7 +46,7 @@ const Login = props => {
          </h2>
          <form onSubmit={sumbitHandler}>
             <TextField
-               id="outlined-full-width"
+               id="outlined-full-username"
                label="Username"
                name="username"
                style={{ margin: 8 }}
@@ -58,13 +61,12 @@ const Login = props => {
                }}
             />
             <TextField
-               id="outlined-full-width"
+               id="outlined-full-password"
                label="Password"
                name="password"
                type="password"
                style={{ margin: 8 }}
                placeholder="Enter your password"
-               helperText="Between 8 and 15 characters"
                fullWidth
                required
                margin="normal"
@@ -74,7 +76,7 @@ const Login = props => {
                   shrink: true,
                }}
             />
-            <Button type="submit" disabled={props.isLoading}>
+            <Button type="submit" disabled={props.isLoading || areInputsInvalid}>
                Submit
             </Button>
          </form>

@@ -5,6 +5,7 @@ import Spinner from 'react-spinner-material';
 import Modal from "../UI/Modal";
 import {updateTextInput} from "../../utils/InputHandlers";
 import UserContext from "../../context/user-context";
+import {checkIfEmptyInputs} from "../../utils/input-validation";
 import {getFetchOptions} from "../../utils/fetchUtils";
 import {fromCamelToKebabCase, capitalizeString} from "../../utils/stringUtils";
 import withErrorModal from "../../hoc/withErrorModal";
@@ -58,11 +59,13 @@ const NewExpertiseModal = props => {
          />
       ))
     
+    let areInputsInvalid = checkIfEmptyInputs(expertiseState);
+    
     return (
       <Modal open={true} label={`Create ${capitalizeString(props.expertiseName)}`} closeHandler={() => props.history.push("/my-profile")}>
             <form onSubmit={submitHandler}>
                {inputFields}
-               <Button type="submit" disabled={props.isLoading}>
+               <Button type="submit" disabled={props.isLoading || areInputsInvalid}>
                   Create expertise
                </Button>
             </form>

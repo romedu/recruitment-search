@@ -1,9 +1,10 @@
-import React, {useState, useContext, Fragment} from "react";
+import React, {useState, useContext} from "react";
 import {Button, TextField} from '@material-ui/core';
 import Spinner from 'react-spinner-material';
 import {updateTextInput} from "../../utils/InputHandlers";
 import Modal from "../UI/Modal";
 import UserContext from "../../context/user-context";
+import {checkIfEmptyInputs} from "../../utils/input-validation";
 import {getFetchOptions} from "../../utils/fetchUtils";
 import {capitalizeString} from "../../utils/stringUtils";
 import withErrorModal from "../../hoc/withErrorModal";
@@ -37,6 +38,8 @@ const UserPropertyModal = props => {
             props.openModalHandler(error.message);
          })
    }
+   
+   let areInputsInvalid = checkIfEmptyInputs(propertyState);
 
    return (
       <Modal open={true} label={`Create ${capitalizeString(resourceName)}`} closeHandler={() => props.history.push("/my-profile")}>
@@ -55,7 +58,7 @@ const UserPropertyModal = props => {
                      shrink: true,
                   }}
                />
-               <Button type="submit" disabled={props.isLoading}>
+               <Button type="submit" disabled={props.isLoading || areInputsInvalid}>
                   {`Create ${resourceName.slice(0, resourceName.length - 1)}`}
                </Button>
             </form>
