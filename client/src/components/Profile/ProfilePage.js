@@ -33,7 +33,7 @@ const ProfilePage = props => {
                 props.stopLoadingHandler();
                 props.openModalHandler(error.message);
             })
-    }, [])
+    }, [props.match])
     
     if(profileState.userData){
         const {name, nationalId, isCompany, positions} = profileState.userData;
