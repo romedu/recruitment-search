@@ -1,7 +1,6 @@
 import React, {useState} from "react";
 import {Button, TextField} from '@material-ui/core';
 import Spinner from 'react-spinner-material';
-import InputField from "../UI/InputField";
 import {getFetchOptions} from "../../utils/fetchUtils";
 import {updateTextInput} from "../../utils/InputHandlers";
 import withErrorModal from "../../hoc/withErrorModal";

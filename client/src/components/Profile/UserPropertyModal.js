@@ -1,11 +1,11 @@
 import React, {useState, useContext, Fragment} from "react";
-import {Button} from '@material-ui/core';
+import {Button, TextField} from '@material-ui/core';
 import Spinner from 'react-spinner-material';
 import {updateTextInput} from "../../utils/InputHandlers";
-import Backdrop from "../UI/Backdrop/Backdrop";
-import InputField from "../UI/InputField";
+import Modal from "../UI/Modal";
 import UserContext from "../../context/user-context";
 import {getFetchOptions} from "../../utils/fetchUtils";
+import {capitalizeString} from "../../utils/stringUtils";
 import withErrorModal from "../../hoc/withErrorModal";
 import withLoader from "../../hoc/withLoader";
 
@@ -39,23 +39,28 @@ const UserPropertyModal = props => {
    }
 
    return (
-      <Fragment>
-         <Backdrop show={true} hide={() => props.history.push("/my-profile")} />
-         <div style={{position: "fixed", width: "25vw", height: "25vw", top: "20vh", left: "37.5vw", zIndex: 101, backgroundColor: "white"}}>
-            <h3>
-               {resourceName.toUpperCase()}
-            </h3>
+      <Modal open={true} label={`Create ${capitalizeString(resourceName)}`} closeHandler={() => props.history.push("/my-profile")}>
             <form onSubmit={submitHandler}>
-               <InputField name={propertyName} value={propertyState[propertyName]} changeHandler={updateInputHandler} required>
-                  {propertyName.toUpperCase()}
-               </InputField>
+               <TextField
+                  id="outlined-full-width"
+                  label={capitalizeString(propertyName)}
+                  name={propertyName}
+                  style={{ margin: 8 }}
+                  fullWidth
+                  required
+                  margin="normal"
+                  variant="outlined"
+                  onChange={updateInputHandler}
+                  InputLabelProps={{
+                     shrink: true,
+                  }}
+               />
                <Button type="submit" disabled={props.isLoading}>
-                  {`Create ${resourceName}`}
+                  {`Create ${resourceName.slice(0, resourceName.length - 1)}`}
                </Button>
             </form>
             <Spinner size={60} spinnerColor={"#C836C3"} spinnerWidth={5} visible={props.isLoading} />
-         </div>
-      </Fragment>
+      </Modal>
    )
 }
 
