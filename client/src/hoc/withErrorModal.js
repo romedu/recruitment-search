@@ -5,19 +5,20 @@ const withErrorModal = PassedComponent => {
     return props => {
         const [modalState, setModalState] = useState({
             isOpen: false,
-            message: null
+            message: null,
+            wasOpened: false
         });
         
-        const openHandler = message => setModalState({isOpen: true, message});
+        const openHandler = message => setModalState({isOpen: true, message, wasOpened: true});
         
-        const closeHandler = () => setModalState({isOpen: false, message: null});
+        const closeHandler = () => setModalState(prevState => ({...prevState, isOpen: false, message: null}));
         
         return (
             <Fragment>
                 <Modal open={modalState.isOpen} label="Error" closeLabel="Okay" closeHandler={closeHandler}>
                     {modalState.message}
                 </Modal>
-                <PassedComponent openModalHandler={openHandler} {...props} />
+                <PassedComponent openModalHandler={openHandler} existError={modalState.wasOpened} {...props} />
             </Fragment>
         )
     }

@@ -49,6 +49,7 @@ const Login = props => {
                id="outlined-full-username"
                label="Username"
                name="username"
+               error={props.existError}
                style={{ margin: 8 }}
                placeholder="Enter your username"
                fullWidth
@@ -65,6 +66,7 @@ const Login = props => {
                label="Password"
                name="password"
                type="password"
+               error={props.existError}
                style={{ margin: 8 }}
                placeholder="Enter your password"
                fullWidth

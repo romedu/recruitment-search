@@ -48,6 +48,7 @@ const UserPropertyModal = props => {
                   id="outlined-full-width"
                   label={capitalizeString(propertyName)}
                   name={propertyName}
+                  error={props.existError}
                   style={{ margin: 8 }}
                   fullWidth
                   required
