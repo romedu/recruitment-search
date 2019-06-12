@@ -2,7 +2,8 @@ const mongoose = require("mongoose"),
       languageSchema = new mongoose.Schema({
          name: {
             type: String,
-            required: true
+            required: true,
+            trim: true
          },
          state: {
             type: Boolean,

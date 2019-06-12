@@ -8,15 +8,18 @@ const mongoose = require("mongoose"),
          },
          department: {
             type: String,
-            required: true
+            required: true,
+            trim: true
          },
          aspiringSalary: {
             type: Number,
-            required: true
+            required: true,
+            min: 0
          },
          recommendedBy: {
             type: String,
-            default: "n/a"
+            default: "n/a",
+            trim: true
          },
          userData: {
             type: mongoose.Schema.Types.ObjectId,

@@ -1,21 +1,26 @@
 const mongoose = require("mongoose"),
+      {createError} = require("../helpers/error"),
       mongoosePaginate = require('mongoose-paginate-v2'),
       positionSchema = new mongoose.Schema({
          name: {
             type: String,
-            required: true
+            required: true,
+            trim: true
          },
          riskLevel: {
             type: String,
-            required: true
+            required: true,
+            trim: true
          },
          minimumSalary: {
             type: Number,
-            required: true
+            required: true,
+            min: 0
          },
          maximumSalary: {
             type: Number,
-            required: true
+            required: true,
+            min: 0
          },
          state: {
             type: Boolean,
@@ -26,6 +31,11 @@ const mongoose = require("mongoose"),
             ref: "User"
          }
       });
+
+positionSchema.pre("save", function(next){
+   if(this.minimumSalary > this.maximumSalary) return next(createError(400, "Minimum salary can't be greater than the maximum salary"));
+   next();
+})
 
 mongoose.plugin(mongoosePaginate);
 

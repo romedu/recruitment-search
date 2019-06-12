@@ -7,15 +7,18 @@ const mongoose = require("mongoose"),
          },
          position: {
             type: String,
-            required: true
+            required: true,
+            trim: true
          },
          department: {
             type: String,
-            required: true
+            required: true,
+            trim: true
          },
          monthlySalary: {
             type: Number,
-            required: true
+            required: true,
+            min: 0
          },
          state: {
             type: Boolean,

@@ -4,11 +4,16 @@ const bcrypt = require("bcryptjs"),
          username: {
             type: String,
             required: true,
-            unique: true
+            unique: true,
+            trim: true,
+            minlength: 5,
+            maxlength: 15
          },
          password: {
             type: String,
-            required: true
+            required: true,
+            trim: true,
+            minlength: 8
          },
          isCompany: {
             type: Boolean,
@@ -16,12 +21,15 @@ const bcrypt = require("bcryptjs"),
          },
          name: {
             type: String,
-            required: true
+            required: true,
+            trim: true
          },
          nationalId: {
             type: String,
             required: true,
-            unique: true
+            unique: true,
+            trim: true,
+            maxlength: 11
          },
          competences: [{
             type: mongoose.Schema.Types.ObjectId,

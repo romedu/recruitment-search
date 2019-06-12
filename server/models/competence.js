@@ -2,7 +2,8 @@ const mongoose = require("mongoose"),
       competenceSchema = new mongoose.Schema({
          description: {
             type: String,
-            required: true
+            required: true,
+            trim: true
          },
          state: {
             type: Boolean,
