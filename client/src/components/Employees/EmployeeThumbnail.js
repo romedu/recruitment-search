@@ -3,7 +3,7 @@ import {Link} from "react-router-dom";
 import {Card, CardContent, CardActions, Typography, Button} from "@material-ui/core";
 
 const EmployeeThumbnail = props => (
-   <Card style={{margin: "2vw"}}>
+   <Card style={{margin: "1vw", flexGrow: "1"}}>
       <CardContent>
          <Typography variant="h5" component="h2">
             {props.position}
