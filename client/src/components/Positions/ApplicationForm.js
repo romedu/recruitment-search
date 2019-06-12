@@ -57,6 +57,7 @@ const ApplicationForm = props => {
                id="outlined-full-width"
                label="Aspiring Salary"
                name="aspiringSalary"
+               type="number"
                style={{ margin: 8 }}
                placeholder="Enter your aspiring salary"
                fullWidth
