@@ -77,6 +77,9 @@ const Register = props => {
                InputLabelProps={{
                   shrink: true,
                }}
+               inputProps={{
+                  maxLength: 11
+               }}
             />
             <TextField
                id="outlined-full-width"
@@ -84,6 +87,7 @@ const Register = props => {
                name="username"
                style={{ margin: 8 }}
                placeholder="Enter your username"
+               helperText="Between 5 and 15 characters"
                fullWidth
                required
                margin="normal"
@@ -91,6 +95,10 @@ const Register = props => {
                onChange={updateInputHandler}
                InputLabelProps={{
                   shrink: true,
+               }}
+               inputProps={{
+                  minLength: 5,
+                  maxLength: 15
                }}
             />
             <TextField
@@ -100,7 +108,7 @@ const Register = props => {
                type="password"
                style={{ margin: 8 }}
                placeholder="Enter your password"
-               helperText="Between 8 and 15 characters"
+               helperText="At least 8 characters"
                fullWidth
                required
                margin="normal"
@@ -108,6 +116,9 @@ const Register = props => {
                onChange={updateInputHandler}
                InputLabelProps={{
                   shrink: true,
+               }}
+               inputProps={{
+                  minLength: 8
                }}
             />
             <FormControlLabel

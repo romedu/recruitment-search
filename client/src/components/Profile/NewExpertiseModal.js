@@ -56,6 +56,7 @@ const NewExpertiseModal = props => {
             InputLabelProps={{
                shrink: true,
             }}
+            inputProps={property.validation}
          />
       ))
     

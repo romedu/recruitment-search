@@ -5,7 +5,8 @@ import UserProperyModal from "./UserPropertyModal";
 import NewExpertiseModal from "./NewExpertiseModal";
 
 const ProfileRoutes = props => {
-   const trainingProperties = [
+   const dateValidation = { max: new Date().toISOString().split("T")[0]}, // html validation requires the ISO Date format
+         trainingProperties = [
             {
                name: "description",
                type: "text"
@@ -20,11 +21,13 @@ const ProfileRoutes = props => {
             },
             {
                name: "startingDate",
-               type: "date"
+               type: "date",
+               validation: dateValidation
             },
             {
                name: "endingDate",
-               type: "date"
+               type: "date",
+               validation: dateValidation
             }
          ], 
          experiencesProperties = [
@@ -38,15 +41,18 @@ const ProfileRoutes = props => {
             },
             {
                name: "salary",
-               type: "number"
+               type: "number",
+               validation: { min: 0 }
             },
             {
                name: "startingDate",
-               type: "date"
+               type: "date",
+               validation: dateValidation
             },
             {
                name: "endingDate",
-               type: "date"
+               type: "date",
+               validation: dateValidation
             }
          ];
 

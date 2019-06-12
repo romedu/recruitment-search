@@ -68,6 +68,9 @@ const ApplicationForm = props => {
                InputLabelProps={{
                   shrink: true,
                }}
+               inputProps={{
+                    min: 0
+                }}
             />
             <TextField
                id="outlined-full-width"
