@@ -23,7 +23,8 @@ const mongoose = require("mongoose"),
          },
          salary: {
             type: Number,
-            required: true
+            required: true,
+            min: 0
          }
       });
 
