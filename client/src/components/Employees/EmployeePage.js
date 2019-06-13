@@ -1,6 +1,6 @@
 import React, {useState, useEffect, useContext, Fragment} from "react";
 import Spinner from 'react-spinner-material';
-import {Button} from '@material-ui/core';
+import {Button, Paper} from '@material-ui/core';
 import EmployeeData from "./EmployeeData";
 import {getFetchOptions} from "../../utils/fetchUtils";
 import UserContext from "../../context/user-context";
@@ -59,7 +59,7 @@ const EmployeePage = props => {
         
         content = (
             <Fragment>
-               <h2>
+               <h2 style={{fontSize: "2em", margin: 0}}>
                   {`Employee: ${position}`}
                </h2>    
                <EmployeeData employee={employeeState.currentEmployee} />
@@ -71,10 +71,12 @@ const EmployeePage = props => {
     }
     
     return (
-        <div>
-           {content}
-           <Spinner size={60} spinnerColor={"#C836C3"} spinnerWidth={5} visible={props.isLoading} />
-        </div>   
+        <Paper style={{backgroundColor: "#fff", padding: "5%"}}>
+            <Paper dp="24" style={{backgroundColor: "rgb(255, 249, 249)", padding: "5%"}}>
+                {content}
+                <Spinner size={60} spinnerColor={"#C836C3"} spinnerWidth={5} visible={props.isLoading} />
+            </Paper>
+        </Paper>
     )
 }
 

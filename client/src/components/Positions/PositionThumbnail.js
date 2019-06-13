@@ -4,7 +4,7 @@ import {Paper, Typography} from "@material-ui/core";
 
 const PositionThumbnail = props => (
    <Link to={`/positions/${props.id}`}>
-      <Paper style={{margin: "5vh 0", padding: "3vh 3vw"}}>
+      <Paper style={{margin: "5vh 0 0", padding: "3vh 3vw"}}>
          <Typography variant="h5" component="h3">
             {props.name}
          </Typography>

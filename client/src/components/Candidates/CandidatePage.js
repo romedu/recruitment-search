@@ -1,6 +1,6 @@
 import React, {useState, useEffect, useContext, Fragment} from "react";
 import Spinner from 'react-spinner-material';
-import {Button} from '@material-ui/core';
+import {Button, Paper} from '@material-ui/core';
 import CandidateData from "./CandidateData";
 import {getFetchOptions} from "../../utils/fetchUtils";
 import UserContext from "../../context/user-context";
@@ -100,13 +100,15 @@ const CandidatePage = props => {
     }
     
     return (
-        <div>
-           <h2>
-              Position Application
-           </h2>   
-           {content}
-           <Spinner size={60} spinnerColor={"#C836C3"} spinnerWidth={5} visible={props.isLoading} />
-        </div>   
+        <Paper style={{backgroundColor: "#fff", padding: "5%"}}>
+            <Paper dp="24" style={{backgroundColor: "rgb(255, 249, 249)", padding: "5%"}}>
+                <h2 style={{fontSize: "2em", margin: 0}}>
+                    Position Application
+                </h2>   
+                    {content}
+                <Spinner size={60} spinnerColor={"#C836C3"} spinnerWidth={5} visible={props.isLoading} />
+            </Paper>
+        </Paper>
     )
 }
 

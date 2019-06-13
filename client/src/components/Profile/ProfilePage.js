@@ -1,5 +1,6 @@
 import React, {useState, useEffect, useContext} from "react";
 import Spinner from 'react-spinner-material';
+import {Paper} from '@material-ui/core';
 import UserFields from "./UserFields";
 import CompanyFields from "./CompanyFields";
 import PersonFields from "./PersonFields";
@@ -56,13 +57,15 @@ const ProfilePage = props => {
     }
     
     return (
-        <div>
-            <h2>
-                My Profile 
-            </h2>
-            {content}
-            <Spinner size={60} spinnerColor={"#C836C3"} spinnerWidth={5} visible={props.isLoading} />
-        </div>
+        <Paper style={{backgroundColor: "#fff", padding: "5%"}}>
+            <Paper dp="24" style={{backgroundColor: "rgb(255, 249, 249)", padding: "5%"}}>
+                <h2 style={{fontSize: "2em", margin: 0}}>
+                    My Profile 
+                </h2>
+                {content}
+                <Spinner size={60} spinnerColor={"#C836C3"} spinnerWidth={5} visible={props.isLoading} />
+            </Paper>
+        </Paper>
     )
 }
 

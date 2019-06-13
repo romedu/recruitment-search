@@ -1,6 +1,6 @@
 import React, {useState, useEffect, useContext, Fragment} from "react";
 import {Link} from "react-router-dom";
-import {Button} from '@material-ui/core';
+import {Button, Paper} from '@material-ui/core';
 import Spinner from 'react-spinner-material';
 import PositionData from "./PositionData";
 import UserContext from "../../context/user-context";
@@ -58,23 +58,25 @@ const PositionPage = props => {
               {name, state, company: companyId} = positionState.currentPosition;
         
         content = (
-            <Fragment>
-               <h2>
-                  {`Position: ${name}`}
-               </h2>    
-               <PositionData position={positionState.currentPosition} />
-               {state && userContext.id && !userContext.isCompany && <Link to={`/positions/${positionId}/application`}> 
-                  Apply 
-               </Link>}
-               {userContext.id === companyId && <Fragment>
-                    <Link to={`/positions/${positionId}/candidates`}>
-                        Candidates
-                    </Link>
-                    <Button onClick={deletePositionHandler} disabled={props.isLoading} >
-                        Delete Position
-                    </Button>
-               </Fragment>}
-            </Fragment>
+            <Paper style={{backgroundColor: "#fff", padding: "5%"}}>
+                <Paper dp="24" style={{backgroundColor: "rgb(255, 249, 249)", padding: "5%"}}>
+                   <h2 style={{fontSize: "2em", margin: 0}}>
+                      {`Position: ${name}`}
+                   </h2>    
+                   <PositionData position={positionState.currentPosition} />
+                   {state && userContext.id && !userContext.isCompany && <Link to={`/positions/${positionId}/application`}> 
+                      Apply 
+                   </Link>}
+                   {userContext.id === companyId && <Fragment>
+                        <Link to={`/positions/${positionId}/candidates`}>
+                            Candidates
+                        </Link>
+                        <Button onClick={deletePositionHandler} disabled={props.isLoading} >
+                            Delete Position
+                        </Button>
+                   </Fragment>}
+                </Paper>
+            </Paper>
         )
     }
     
