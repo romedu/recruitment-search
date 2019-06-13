@@ -3,6 +3,7 @@ import {Link} from "react-router-dom";
 import {Button, TextField, Checkbox, FormControlLabel} from '@material-ui/core';
 import Spinner from 'react-spinner-material';
 import {getFetchOptions} from "../../utils/fetchUtils";
+import {checkIfPersonalId} from "../../utils/input-validation";
 import {updateTextInput, updateCheckboxInput} from "../../utils/InputHandlers";
 import UserContext from "../../context/user-context";
 import withErrorModal from "../../hoc/withErrorModal";
@@ -14,6 +15,7 @@ const Register = props => {
    const [registerState, setRegisterState] = useState({
       name: "",
       nationalId: "",
+      invalidNationalId: false,
       username: "",
       password: "",
       isCompany: false
@@ -26,6 +28,12 @@ const Register = props => {
 
    const sumbitHandler = e => {
       e.preventDefault();
+      
+      if(!checkIfPersonalId(registerState.nationalId)){
+         setRegisterState(prevState => ({...prevState, invalidNationalId: true}));
+         return props.openModalHandler("Invalid National ID");
+      }
+      
       const fetchOptions = getFetchOptions("POST", null, registerState);
 
       props.startLoadingHandler();
@@ -39,6 +47,7 @@ const Register = props => {
          .catch(error => {
             props.stopLoadingHandler();
             props.openModalHandler(error.message);
+            if(registerState.invalidNationalId) setRegisterState(prevState => ({...prevState, invalidNationalId: false}));
          })
    }
 
@@ -67,6 +76,7 @@ const Register = props => {
                id="outlined-full-width"
                label="National ID"
                name="nationalId"
+               error={registerState.invalidNationalId}
                style={{ margin: 8 }}
                placeholder="Enter your National ID or Passport number"
                fullWidth
