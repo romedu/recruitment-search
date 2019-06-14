@@ -1,5 +1,6 @@
 const bcrypt = require("bcryptjs"),
       mongoose = require("mongoose"),
+      {nationalIdValidator} = require("../helpers/validators");
       userSchema = new mongoose.Schema({
          username: {
             type: String,
@@ -29,7 +30,9 @@ const bcrypt = require("bcryptjs"),
             required: true,
             unique: true,
             trim: true,
-            maxlength: 11
+            validate: {
+               validator: nationalIdValidator
+            }
          },
          competences: [{
             type: mongoose.Schema.Types.ObjectId,
