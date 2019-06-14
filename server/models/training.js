@@ -3,33 +3,33 @@ const mongoose = require("mongoose"),
       trainingSchema = new mongoose.Schema({
          description: {
             type: String,
-            required: true,
+            required: [true, "Description is required."],
             trim: true
          },
          level: {
             type: String,
-            required: true,
+            required: [true, "Level is required."],
             trim: true
          },
          institution: {
             type: String,
-            required: true,
+            required: [true, "Institution is required."],
             trim: true
          },
          startingDate: {
             type: Date,
-            required: true,
+            required: [true, "Starting date is required."],
             max: Date.now()
          },
          endingDate: {
             type: Date, 
-            required: true,
+            required: [true, "Ending date is required."],
             max: Date.now()
          }
       });
       
 trainingSchema.pre("save", function(next){
-   if(this.startingDate > this.endingDate) return next(createError(400, "Starting date can't be greater than the ending date"));
+   if(this.startingDate > this.endingDate) return next(createError(400, "Ending date must be greater than the starting date."));
    next();
 })
 

@@ -4,23 +4,23 @@ const mongoose = require("mongoose"),
       positionSchema = new mongoose.Schema({
          name: {
             type: String,
-            required: true,
+            required: [true, "Name is required."],
             trim: true
          },
          riskLevel: {
             type: String,
-            required: true,
+            required: [true, "Risk level is required."],
             trim: true
          },
          minimumSalary: {
             type: Number,
-            required: true,
-            min: 0
+            required: [true, "Minimum salary is required."],
+            min: [0, "Minimum salary must be equal o greater than 0."]
          },
          maximumSalary: {
             type: Number,
-            required: true,
-            min: 0
+            required: [true, "Maximum salary is required."],
+            min: [0, "Maximum salary must be equal o greater than 0."]
          },
          state: {
             type: Boolean,
@@ -33,7 +33,7 @@ const mongoose = require("mongoose"),
       });
 
 positionSchema.pre("save", function(next){
-   if(this.minimumSalary > this.maximumSalary) return next(createError(400, "Minimum salary can't be greater than the maximum salary"));
+   if(this.minimumSalary > this.maximumSalary) return next(createError(400, "Maximum salary must be greater than the minimum salary."));
    next();
 })
 

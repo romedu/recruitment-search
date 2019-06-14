@@ -4,17 +4,17 @@ const mongoose = require("mongoose"),
          position: {
             type: mongoose.Schema.Types.ObjectId,
             ref: "Position",
-            required: true
+            required: [true, "Position is required."]
          },
          department: {
             type: String,
-            required: true,
+            required: [true, "Position is required."],
             trim: true
          },
          aspiringSalary: {
             type: Number,
-            required: true,
-            min: 0
+            required: [true, "Aspiring salary is required."],
+            min: [0, "Aspiring salary must be equal o greater than 0."]
          },
          recommendedBy: {
             type: String,
@@ -24,7 +24,7 @@ const mongoose = require("mongoose"),
          userData: {
             type: mongoose.Schema.Types.ObjectId,
             ref: "User",
-            required: true
+            required: [true, "User data is required."]
          }
       });
       

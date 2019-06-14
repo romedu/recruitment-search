@@ -1,20 +1,20 @@
 const bcrypt = require("bcryptjs"),
       mongoose = require("mongoose"),
-      {nationalIdValidator} = require("../helpers/validators");
+      {nationalIdValidator} = require("../helpers/validators"),
       userSchema = new mongoose.Schema({
          username: {
             type: String,
-            required: true,
+            required: [true, "Username is required."],
             unique: true,
             trim: true,
-            minlength: 5,
-            maxlength: 15
+            minlength: [5, "The username should have between 5 and 15 characters."],
+            maxlength: [15, "The username should have between 5 and 15 characters."]
          },
          password: {
             type: String,
-            required: true,
+            required: [true, "Password is required."],
             trim: true,
-            minlength: 8
+            minlength: [8, "The password should have at least 8 characters."]
          },
          isCompany: {
             type: Boolean,
@@ -22,12 +22,12 @@ const bcrypt = require("bcryptjs"),
          },
          name: {
             type: String,
-            required: true,
+            required: [true, "Name is required."],
             trim: true
          },
          nationalId: {
             type: String,
-            required: true,
+            required: [true, "NationalId is required."],
             unique: true,
             trim: true,
             validate: {
