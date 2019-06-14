@@ -11,4 +11,6 @@ router.route("/:id")
    .patch(employeeMiddlewares.findEmployee, employeeMiddlewares.checkIfEmployer, employeeMiddlewares.isUserDataValid, helpers.updateEmployee)
    .delete(employeeMiddlewares.findEmployee, employeeMiddlewares.checkIfEmployer, helpers.deleteEmployee)
 
+router.get("/:id/download", employeeMiddlewares.findEmployee, employeeMiddlewares.checkIfEmployer, helpers.downloadEmployeeData)
+
 module.exports = router;

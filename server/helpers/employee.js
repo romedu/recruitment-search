@@ -1,4 +1,6 @@
-const {Employee} = require("../models"),
+const fs = require("fs"),
+      path = require("path"),
+      {Employee} = require("../models"),
       {createError} = require("./error"),
       {createQueryObj} = require("./utilities");
 
@@ -60,6 +62,29 @@ exports.deleteEmployee = async (req, res, next) => {
       const {currentEmployee} = req.locals;
       await Employee.findOneAndRemove({_id: req.params.id});
       res.status(200).json({deletedEmployee: currentEmployee});
+   }
+   catch(error){
+      next(error);
+   }
+}
+
+exports.downloadEmployeeData = (req, res, next) => {
+   try {
+      const {currentEmployee: {userData, position, department, monthlySalary, company}} = req.locals;
+      
+      let fileText = `
+         Name: ${userData.name}
+         National ID: ${userData.nationalId}
+         Position: ${position}
+         Department: ${department}
+         Monthly Salary: ${monthlySalary}
+         Company Name: ${company.name}
+      `;
+
+      fs.writeFile("./assets/files/todo-download.txt", fileText, error => {
+         if(error) throw createError(500, "Failed to create file");
+         res.download(path.join(__dirname, "../assets/files/todo-download.txt"));
+      })
    }
    catch(error){
       next(error);
