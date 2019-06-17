@@ -73,16 +73,16 @@ exports.downloadEmployeeData = (req, res, next) => {
       const {currentEmployee: {userData, position, department, monthlySalary, company}} = req.locals;
       
       let fileText = `
-         Name: ${userData.name}
-         National ID: ${userData.nationalId}
-         Position: ${position}
-         Department: ${department}
-         Monthly Salary: ${monthlySalary}
-         Company Name: ${company.name}
-      `;
+          Name: ${userData.name + "\n"}
+          National ID: ${userData.nationalId + "\n"}
+          Position: ${position + "\n"}
+          Department: ${department + "\n"}
+          Monthly Salary: ${monthlySalary + "\n"}
+          Company Name: ${company.name}
+         `;
 
       fs.writeFile("./assets/files/todo-download.txt", fileText, error => {
-         if(error) throw createError(500, "Failed to create file");
+         if(error) throw new Error();
          res.download(path.join(__dirname, "../assets/files/todo-download.txt"));
       })
    }
