@@ -46,7 +46,7 @@ exports.updateEmployee = async (req, res, next) => {
             {company, ...updateData} = req.body;
 
       // Update the values from the properties passed in the request body
-      for(property in updateData) currentEmployee[property] = updateData[property];
+      for(let property in updateData) currentEmployee[property] = updateData[property];
       await currentEmployee.save();
 
       res.status(200).json({updatedEmployee: currentEmployee});
@@ -81,9 +81,9 @@ exports.downloadEmployeeData = (req, res, next) => {
           Company Name: ${company.name}
          `;
 
-      fs.writeFile("./assets/files/todo-download.txt", fileText, error => {
+      fs.writeFile("./assets/files/employee-download.txt", fileText, error => {
          if(error) throw new Error();
-         res.download(path.join(__dirname, "../assets/files/todo-download.txt"));
+         res.download(path.join(__dirname, "../assets/files/employee-download.txt"));
       })
    }
    catch(error){
