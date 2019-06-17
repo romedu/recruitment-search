@@ -20,8 +20,9 @@ const checkIfNationalId = nationalId => {
     if(isNaN(Number(nationalId))) return false;
     
     const processedIdDigits = nationalId.split("")
-                                        .map((digit, index) => {
-                                            let currentDigit = digit;
+                                        .map((digit, index, arr) => {
+                                            let currentDigit = Number(digit);
+                                            if(index >= arr.length -1) return 0;
                                             if(index % 2) currentDigit *= 2;
                                             if(currentDigit >= 10) currentDigit -= 9;
                                             return currentDigit;
@@ -29,7 +30,7 @@ const checkIfNationalId = nationalId => {
     
     const processedDigitsSum = processedIdDigits.reduce((acc, nextVal) => acc + nextVal, 0);                                    
     
-    return processedDigitsSum[10] === getVerifierNum(processedDigitsSum);
+    return Number(nationalId[10]) === getVerifierNum(processedDigitsSum);
 }
 
 const getVerifierNum = processedDigitsSum => {
