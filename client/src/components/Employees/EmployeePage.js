@@ -2,6 +2,7 @@ import React, {useState, useEffect, useContext, Fragment} from "react";
 import Spinner from 'react-spinner-material';
 import {Button, Paper} from '@material-ui/core';
 import EmployeeData from "./EmployeeData";
+import EmployeeDownload from "./EmployeeDownload";
 import {getFetchOptions} from "../../utils/fetchUtils";
 import UserContext from "../../context/user-context";
 import withErrorModal from "../../hoc/withErrorModal";
@@ -55,7 +56,8 @@ const EmployeePage = props => {
     }
     
     if(employeeState.currentEmployee){
-        let {position, state} = employeeState.currentEmployee;
+        let {employeeId} = props.match.params,
+            {position, state} = employeeState.currentEmployee;
         
         content = (
             <Fragment>
@@ -66,6 +68,7 @@ const EmployeePage = props => {
                {state && <Button onClick={fireEmployee} disabled={props.isLoading} >
                    Fire Employee
                </Button>}
+               <EmployeeDownload employeeId={employeeId} />
             </Fragment>
         )
     }
