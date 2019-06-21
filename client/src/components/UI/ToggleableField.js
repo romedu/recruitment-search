@@ -1,41 +1,68 @@
-import React from "react";
+import React, {Fragment} from "react";
 import {Link} from "react-router-dom";
-import Button from "../UI/Button";
+import {makeStyles} from '@material-ui/core/styles';
+import {List, Button, ListItem, ListItemText, ListItemSecondaryAction, Collapse} from '@material-ui/core';
 import {buildUrl} from "../../utils/stringUtils";
 
+const useStyles = makeStyles(theme => ({
+  nested: {
+    paddingLeft: theme.spacing(4),
+  }
+}));
+
 const ToggleableField = props => {
+    const classes = useStyles();
     let dataList;
     
     if(props.urlResources){
         dataList = props.fieldData.map(data => (
-            <Link key={data._id} to={buildUrl(data, props.urlResources, props.urlResourcesIds)} style={{display: "block"}}>
-               {props.identifiers.reduce((acc, nextVal) => acc[nextVal], data)}
-            </Link>
+            <ListItem 
+                key={data._id} 
+                button 
+                className={classes.nested}
+            >
+                <Link 
+                    to={buildUrl(data, props.urlResources, props.urlResourcesIds)} 
+                    // style={{display: "block"}}
+                >
+                    <ListItemText primary={props.identifiers.reduce((acc, nextVal) => acc[nextVal], data)} />
+                </Link>
+            </ListItem>
+            
+               
+            
         ))
     }
     else {
         dataList = props.fieldData.map(data => (
-            <li key={data._id} >
-               {props.identifiers.reduce((acc, nextVal) => acc[nextVal], data)}
-            </li>
+            <ListItem 
+                key={data._id} 
+                button 
+                className={classes.nested}
+            >
+                <ListItemText primary={props.identifiers.reduce((acc, nextVal) => acc[nextVal], data)} />
+            </ListItem>
         ))
     }
     
     return (
-        <div>
-            <h3>
-                {props.children}
-            </h3>
-            <Button style={{float: "right"}} action={props.toggleHandler}>
-                {props.isDisplayed ? "Hide" : "Show"}
-            </Button>
-            {props.creationUrl && <Link to={props.creationUrl}>
-                Create New
-            </Link>}
-            <ul>
-                {props.isDisplayed && dataList}
-            </ul>
-        </div>    
+        <Fragment>
+                <ListItem button onClick={props.toggleHandler}>
+                    <ListItemText primary={props.children} />
+                    {props.creationUrl && <ListItemSecondaryAction>
+                        <Link to={props.creationUrl}>
+                            <Button>
+                                +
+                            </Button>
+                        </Link>
+                    </ListItemSecondaryAction>}
+                </ListItem>
+                <Collapse in={props.isDisplayed} timeout="auto" unmountOnExit>
+                    <List component="div" disablePadding>
+                        {dataList}
+                    </List>
+                </Collapse>
+        </Fragment>    
     )
 }
 

@@ -1,6 +1,7 @@
 import React, {useState, useEffect, useContext} from "react";
 import Spinner from 'react-spinner-material';
-import {Paper} from '@material-ui/core';
+import {makeStyles} from '@material-ui/core/styles';
+import {Paper, List, ListSubheader, Divider} from '@material-ui/core';
 import UserFields from "./UserFields";
 import CompanyFields from "./CompanyFields";
 import PersonFields from "./PersonFields";
@@ -9,8 +10,15 @@ import UserContext from "../../context/user-context";
 import withErrorModal from "../../hoc/withErrorModal";
 import withLoader from "../../hoc/withLoader";
 
+const useStyles = makeStyles(theme => ({
+  root: {
+    backgroundColor: theme.palette.background.paper,
+  }
+}));
+
 const ProfilePage = props => {
-    const userContext = useContext(UserContext),
+    const classes = useStyles(),
+          userContext = useContext(UserContext),
           [profileState, setProfileState] = useState({
               userData: null
           });
@@ -42,7 +50,19 @@ const ProfilePage = props => {
             content = (
                 <div>
                     <UserFields name={name} nationalId={nationalId} isCompany={isCompany} />
-                    <CompanyFields positions={positions} />
+                    <List
+                        component="nav"
+                        aria-labelledby="nested-list-subheader"
+                        subheader={
+                            <ListSubheader component="div" id="nested-list-subheader">
+                            User Data
+                            </ListSubheader>
+                        }
+                        className={classes.root}
+                    >
+                        <Divider />
+                        <CompanyFields positions={positions} />
+                    </List>
                 </div>
             )
         }
@@ -50,7 +70,19 @@ const ProfilePage = props => {
             content = (
                 <div>
                     <UserFields name={name} nationalId={nationalId} isCompany={isCompany} />
-                    <PersonFields {...profileState.userData} />
+                    <List
+                        component="nav"
+                        aria-labelledby="nested-list-subheader"
+                        subheader={
+                            <ListSubheader component="div" id="nested-list-subheader">
+                            User Data
+                            </ListSubheader>
+                        }
+                        className={classes.root}
+                    >
+                        <Divider />
+                        <PersonFields {...profileState.userData} />
+                    </List>
                 </div>
             )
         }
